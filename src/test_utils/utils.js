@@ -2,7 +2,7 @@ import {BrowserRouter} from 'react-router-dom'
 import {IntlProvider} from 'react-intl'
 import {render as rtlRender} from '@testing-library/react'
 import en from '../translations/en.json'
-
+ 
 function render(component, {...options} = {}){
     function Wrapper({children}){
       return(

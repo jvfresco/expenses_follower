@@ -3,7 +3,7 @@ import ExpenseForm from './ExpenseForm'
 const ExpensesPage = (props) =>  {
 
 const onExpensePost = async(expenseData) => {
-    console.log(expenseData)
+    
     try{
         const res = await fetch('http://localhost:8080/movements/expense', {
             method: "POST",

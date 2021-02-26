@@ -1,4 +1,3 @@
-import {required, length} from '../../utils/validators'
 import React from 'react'
 
 //Validates the new input value and the whole form
