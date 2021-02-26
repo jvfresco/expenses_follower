@@ -1,10 +1,26 @@
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit; /*activate inheritance for the whole website and set the value in the body */
+}
+
+html {
+  font-size: 62.5%; /*Font-size is used as the reference for the transform from rem to px. The percentage is applied to the default of 16px if user didn't touch it */
+  /* 1 rem = 10px */
+}
+
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  box-sizing: border-box; /*borders and paddings are not added to the total size of the box*/
+  font-family: 'Hind', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+
+body {
+  
 }
 
 code {

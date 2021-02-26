@@ -3,10 +3,28 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {BrowserRouter} from 'react-router-dom'
+
+import en from './translations/en.json'; // translation -1
+import es from './translations/es.json'; // translation -2
+
+import { IntlProvider } from 'react-intl';
+
+var locale = (navigator.languages && navigator.languages[0]) || navigator.language || navigator.userLanguage || 'en-US';
+const msg = {
+    'en-US': en,
+    'es-ES': es
+};
+
+const message = (locale === 'en-US') ? en : Object.assign({}, en, msg[locale]);
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <IntlProvider locale="es" messages={message}> 
+        <App />
+      </IntlProvider>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
