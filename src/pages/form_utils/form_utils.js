@@ -1,7 +1,8 @@
 import {required, length} from '../../utils/validators'
 import React from 'react'
 
-export function updateFormState(input, value, prevState, formName){
+//Validates the new input value and the whole form
+function updateFormState(input, value, prevState, formName){
           let isValid = true;
           if(prevState[formName][input].validators){
             for (const validator of prevState[formName][input].validators) {
@@ -28,7 +29,9 @@ export function updateFormState(input, value, prevState, formName){
         
 }
 
-export  function handleFormSubmit(e, state, onSubmit, inputChangeHandler, formName){
+//Function executed onSubmit
+//Checks for global form validity and sybmits data or touches the cells if validation failed
+function handleFormSubmit(e, state, onSubmit, inputChangeHandler, formName){
     e.preventDefault()
     if(state.formIsValid){
       let values = {}
@@ -44,10 +47,13 @@ export  function handleFormSubmit(e, state, onSubmit, inputChangeHandler, formNa
   }
 
   
-
+//Custom hook:
+//Accepts an state object, 
+//Returns the updated state, handleFormSubmit and inputChangeHandler
 export const useForm = (initialState) => {
   const [state, setState] = React.useState({...initialState, formIsValid:false})
 
+  //Each keystroke is updated here
   const inputChangeHandler = (input, value) => {
     setState(prevState => {
       return updateFormState(input, value, prevState, Object.keys(state)[0])
