@@ -5,7 +5,7 @@ import Button from '../../components/UI/Button/Button'
 import { FormattedMessage, useIntl } from 'react-intl';
 import {useForm} from '../form_utils/form_utils'
 
-const Login = (props) => {
+const Login = ({onSubmit, isLoading, isError, isSuccess}) => {
     const intl = useIntl()
     const {state, inputChangeHandler, handleFormSubmit} = useForm({
         loginForm: {
@@ -30,7 +30,7 @@ const Login = (props) => {
           <AuthForm>
             <form
               style={{width: "65%", alignSelf: "center",}}
-              onSubmit={(e) => handleFormSubmit(e, state, props.onSubmit, inputChangeHandler, Object.keys(state)[0])}
+              onSubmit={(e) => handleFormSubmit(e, state, onSubmit, inputChangeHandler, Object.keys(state)[0])}
             >
               <Input
                 id="email"
@@ -56,7 +56,7 @@ const Login = (props) => {
                 placeholder={intl.formatMessage({id:'form.password'})}
                 validationMessage={<FormattedMessage id='validation.password' />}
               />
-              <Button design="raised" type="submit" loading={props.loading}>
+              <Button design="raised" type="submit" loading={isLoading}>
                 <FormattedMessage id='menu.login' />
               </Button>
             </form>

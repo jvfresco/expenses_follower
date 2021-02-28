@@ -1,6 +1,29 @@
 
 const AUTH_URL = 'http://localhost:8080/auth/'
 
+const setAutoLogout = (milliseconds, logoutHandler) => {
+  setTimeout(() => {
+    logoutHandler();
+  }, milliseconds);
+};
+
+async function getUser(logoutHandler){
+  const token = localStorage.getItem("token");
+    const expiryDate = localStorage.getItem("expiryDate");
+    if (!token || !expiryDate) {
+      return;
+    }
+    if (new Date(expiryDate) <= new Date()) {
+      logoutHandler();
+      return;
+    }
+    const userId = localStorage.getItem("userId");
+    const remainingMilliseconds =
+      new Date(expiryDate).getTime() - new Date().getTime();
+    setAutoLogout(remainingMilliseconds, logoutHandler);
+  return {token, userId}
+}
+
 function handleUserResponse({token, userId}){
     localStorage.setItem("token", token);
     localStorage.setItem("userId", userId);
@@ -36,4 +59,4 @@ async function client(endpoint, data) {
     })
   }
 
-  export {login, signup}
+  export {login, signup, getUser}

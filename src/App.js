@@ -2,169 +2,53 @@
 import { css, jsx } from '@emotion/react'
 import Navbar from './components/Navigation/Navbar'
 import { Switch, Route} from 'react-router-dom'
-import { useLayoutEffect, useReducer } from 'react'
+import { useLayoutEffect, useCallback } from 'react'
 import GlobalView from './pages/GlobalView/GlobalView'
 import Auth from './pages/Auth/Auth'
 import ExpensesPage from './pages/Expenses/ExpensesPage'
 import AccountsPage from './pages/Accounts/AccountsPage'
 import CategoriesPage from './pages/Categories/CategoriesPage'
-import {login, signup} from './auth-provider'
-
-const reducer = (state, action) => {
-  switch (action.type){
-    case 'AUTH_USER': 
-    return {...state, isAuth: true, token: action.token, userId: action.userId}
-    case 'LOGOUT_HANDLER':
-      return {...state, isAuth: false, token: null}
-    case 'AUTH_LOADING':
-      return {...state, authLoading: true}
-    case 'LOGIN_SUCCESS':
-      return {...state, isAuth: true, token: action.token, authLoading: false, userId: action.userId}
-    case 'LOGIN_ERROR':
-      return {...state, isAuth: false, authLoading: false, error: action.err}
-    case 'SIGNUP_SUCCESS':
-      return {...state, isAuth: false, authLoading: false}
-    case 'SIGNUP_ERROR':
-      return {...state, isAuth: false, authLoading: false, error: action.err}
-    case 'ERROR':
-      return {...state, error: null}
-    default:
-      return null
-  }
-}
+import * as auth_provider from './auth-provider'
+import { useAsync } from './utils/hooks'
 
 function App(props) {
+  const {data: user, run, isLoading, isError, isSuccess, setData} = useAsync()
 
-  const [state, dispatch] = useReducer(reducer, {
-    isAuth: false,
-    token: null,
-    userId: null,
-    authLoading: false,
-    error: null,
-  });
-
-  useLayoutEffect(() => {
-    const token = localStorage.getItem("token");
-    const expiryDate = localStorage.getItem("expiryDate");
-    if (!token || !expiryDate) {
-      return;
-    }
-    if (new Date(expiryDate) <= new Date()) {
-      logoutHandler();
-      return;
-    }
-    const userId = localStorage.getItem("userId");
-    const remainingMilliseconds =
-      new Date(expiryDate).getTime() - new Date().getTime();
-    dispatch({type: 'AUTH_USER', token, userId})
-    setAutoLogout(remainingMilliseconds);
-  },[])
-
-  const loginHandler = async (authData) => {
-    dispatch({type:'AUTH_LOADING'})
-    // try {
-    //   const res = await fetch("http://localhost:8080/auth/login", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       email: authData.email,
-    //       password: authData.password
-    //     }),
-    //   });
-    //   if (res.status === 422) {
-    //     throw new Error("Validation failed.");
-    //   }
-    //   if (res.status !== 200 && res.status !== 201) {
-    //     console.log("Error!");
-    //     throw new Error("Could not authenticate you!");
-    //   }
-    //   const resData = await res.json();
-    //   dispatch({type:'LOGIN_SUCCESS', token: resData.token,userId: resData.userId,})
-    //   localStorage.setItem("token", resData.token);
-    //   localStorage.setItem("userId", resData.userId);
-    //   const remainingMilliseconds = 60 * 60 * 1000;
-    //   const expiryDate = new Date(new Date().getTime() + remainingMilliseconds);
-    //   localStorage.setItem("expiryDate", expiryDate.toISOString());
-    //   setAutoLogout(remainingMilliseconds);
-    // } catch (err) {
-    //   console.log(err);
-    //   dispatch({type:'LOGIN_ERROR', err})
-    // }
-    login(authData).then(user => {
-      dispatch({type:'LOGIN_SUCCESS', token: user.token,userId: user.userId,})
-    })
-  };
-
-  const signupHandler = async (authData) => {
-    // dispatch({type:'AUTH_LOADING'})
-    // try {
-    //   const res = await fetch("http://localhost:8080/auth/signup", {
-    //     method: "PUT",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       email: authData.email,
-    //       password: authData.password,
-    //       name: authData.name,
-    //     }),
-    //   });
-    //   if (res.status === 422) {
-    //     throw new Error(
-    //       "Validation failed. Make sure the email address isn't used yet!"
-    //     );
-    //   }
-    //   if (res.status !== 200 && res.status !== 201) {
-    //     console.log("Error!");
-    //     throw new Error("Creating a user failed!");
-    //   }
-    //   const resData = await res.json();
-    //   dispatch({type:'SIGNUP_SUCCESS'})
-    //   props.history.replace("/");
-    // } catch (err) {
-    //   console.log(err);
-    //   dispatch({type:'SIGNUP_ERROR', err})
-    // }
-    dispatch({type:'AUTH_LOADING'})
-    signup(authData).then(response => {
-      dispatch({type:'SIGNUP_SUCCESS'})
-      //TODO: REDIRECTION TO LOGIN AFTER LOGOUT
-    })
-  };
-  
-  const logoutHandler = () => {
-    dispatch({type: 'LOGOUT_HANDLER'})
+  const logoutHandler = useCallback(() => {
+    setData(null)
     localStorage.removeItem("token");
     localStorage.removeItem("expiryDate");
     localStorage.removeItem("userId");
-  };
+  },[setData]);
 
-  const setAutoLogout = (milliseconds) => {
-    //TODO: REDIRECT TO LOGIN, LOGOUT IF NO ACTIVITY, DISPLAY INFO MESSAGE
-    setTimeout(() => {
-      logoutHandler();
-    }, milliseconds);
-  };
+  useLayoutEffect(() => {
+    run(auth_provider.getUser(logoutHandler))
+  },[run, logoutHandler])
 
+
+  const login = authData => auth_provider.login(authData).then(user => {
+    setData(user)
+  })
+
+  const signup = authData => auth_provider.signup(authData).then(response => {
+    //TODO: REDIRECTION TO LOGIN AFTER SIGNUP
+  })
 
   return (
     <div css={{display:'flex'}}>
-      <Navbar onLogout={logoutHandler} isAuth={state.isAuth} />
+      <Navbar onLogout={logoutHandler}/>
 
-      {state.isAuth ? (
+      {user ? (
         <Switch>
           <Route path="/" exact render={(props) => <GlobalView {...props} />} />
-          <Route path="/expenses" exact render={(props) => <ExpensesPage {...props} userId={state.userId} token={state.token}/>} />
-          <Route path="/accounts" exact render={(props) => <AccountsPage {...props} userId={state.userId} token={state.token}/>} />
-          <Route path="/categories" exact render={(props) => <CategoriesPage {...props} userId={state.userId} token={state.token} purpose='expense'/>} />
+          <Route path="/expenses" exact render={(props) => <ExpensesPage {...props} userId={user.userId} token={user.token}/>} />
+          <Route path="/accounts" exact render={(props) => <AccountsPage {...props} userId={user.userId} token={user.token}/>} />
+          <Route path="/categories" exact render={(props) => <CategoriesPage {...props} userId={user.userId} token={user.token} purpose='expense'/>} />
         </Switch>
       ) : (
         <Auth
-          loading={state.authLoading}
-          loginHandler={loginHandler}
-          signupHandler={signupHandler}
+          loginHandler={login}
+          signupHandler={signup}
         />
       )}
     </div>

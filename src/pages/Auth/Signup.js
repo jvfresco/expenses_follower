@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import { required, length, email } from '../../utils/validators';
@@ -6,7 +5,7 @@ import AuthForm from './AuthForm';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {useForm} from '../form_utils/form_utils'
 
-const Signup = (props) => {
+const Signup = ({onSubmit, isError, isLoading, isSuccess}) => {
   const intl = useIntl()
   const {state, inputChangeHandler, handleFormSubmit} = useForm({
     signupForm: {
@@ -35,7 +34,7 @@ const Signup = (props) => {
 
     return (
       <AuthForm>
-        <form onSubmit={(e) => handleFormSubmit(e, state, props.onSubmit, inputChangeHandler, Object.keys(state)[0])} 
+        <form onSubmit={(e) => handleFormSubmit(e, state, onSubmit, inputChangeHandler, Object.keys(state)[0])} 
               style={{width: "65%", alignSelf: "center"}}>
           <Input
             id="email"
@@ -73,7 +72,7 @@ const Signup = (props) => {
             placeholder={intl.formatMessage({id:'form.password'})}
             validationMessage={<FormattedMessage id='validation.password' />}
           />
-          <Button design="raised" type="submit" loading={props.loading}>
+          <Button design="raised" type="submit" loading={isLoading}>
             <FormattedMessage id='menu.signup'/> 
           </Button>
         </form>

@@ -5,12 +5,21 @@ import { Switch, Route } from 'react-router-dom'
 import {Fragment} from 'react'
 import Modal from '../../components/UI/Modal/Modal'
 import Backdrop from '../../components/UI/Backdrop/Backdrop'
+import { useAsync } from '../../utils/hooks.js'
 
 
 
-const Auth = ({loginHandler, signupHandler, loading}) => {
+const Auth = ({loginHandler, signupHandler}) => {
+    const {run, isLoading, isError, isSuccess} = useAsync()
 
-    
+    const handleLogin = (authData) => {
+      run(loginHandler(authData))
+    }
+
+    const handleSignup = (authData) => {
+      run(signupHandler(authData))
+    }
+
     return (
         <Fragment>
         <Backdrop />
@@ -22,8 +31,10 @@ const Auth = ({loginHandler, signupHandler, loading}) => {
               render={(props) => (
                 <Login
                   {...props}
-                  onSubmit={loginHandler}
-                  loading={loading}
+                  isLoading={isLoading}
+                  isError={isError}
+                  isSuccess={isSuccess}
+                  onSubmit={handleLogin}
                 />
               )}
             />
@@ -33,8 +44,10 @@ const Auth = ({loginHandler, signupHandler, loading}) => {
               render={(props) => (
                 <Signup
                   {...props}
-                  onSubmit={signupHandler}
-                  loading={loading}
+                  isLoading={isLoading}
+                  isError={isError}
+                  isSuccess={isSuccess}
+                  onSubmit={handleSignup}
                 />
               )}
             />
