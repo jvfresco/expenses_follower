@@ -25,5 +25,7 @@
     "movement.tax": "Tax",
     "account.name": "Name of account",
     "account.position": "Position of the account",
-    "category.category": "Category name"
+    "category.category": "Category name",
+    "theme.dark": "Dark theme",
+    "theme.light": "Light theme"
 }

@@ -1,10 +1,12 @@
+/* @jsxImportSource @emotion/react */
+import { css, jsx } from '@emotion/react'
 import {useState} from 'react'
 import styled from '@emotion/styled/macro'
 import DrawerButton from './DrawerButton/DrawerButton'
 import '../../css-vars.css'
 import ThemeToggle from '../UI/ThemeToggle/ThemeToggle'
 import { FormattedMessage } from 'react-intl';
-import Button from '../UI/Button/Button'
+import {Link} from '../UI/Button/Button'
 
 const SideDrawer = styled.div(
   {
@@ -41,7 +43,7 @@ const MenuList = styled.ul(
   })
 );
 
-const ItemList = styled.li({
+const styleItem = {
   margin: "1.25rem 0",
   fontSize: "2rem",
   marginRight: "1.5rem",
@@ -50,7 +52,9 @@ const ItemList = styled.li({
   ":hover": {
     color: "var(--colors-menu-text-hover)",
   }
-});
+}
+
+const ItemList = styled(Link)(styleItem);
     
 
 const Navbar = (props) => {
@@ -69,34 +73,26 @@ const Navbar = (props) => {
             <SideDrawer active={active}>
                 <DrawerButton handleClick={() => handleNavbarActivity()} active={active}/>
                 <MenuList active={active}>
-                    <ItemList>
+                    <ItemList link='/global'>
                         <FormattedMessage  id='menu.position'/>
                     </ItemList>
-                    <ItemList>
-                        <Button link="/expenses">
+                    <ItemList link="/expenses">
                           <FormattedMessage  id='menu.expenses'/>
-                        </Button>
                     </ItemList>
-                    <ItemList>
+                    <ItemList link="/incomes">
                         <FormattedMessage  id='menu.incomes'/>
                     </ItemList>
-                    <ItemList>
-                        <Button link="/accounts">
+                    <ItemList link="/accounts">
                           <FormattedMessage  id='menu.accounts'/>
-                        </Button>
                     </ItemList>
-                    <ItemList>
-                        <Button link="/categories">
+                    <ItemList link="/categories">
                           <FormattedMessage  id='menu.categories'/>
-                        </Button>
                     </ItemList>
-                    <ItemList>
+                    <span css={styleItem}>
                         <ThemeToggle />
-                    </ItemList>
-                    <ItemList onClick={() => handleLogout()}>
-                    <Button link="/">
-                          <FormattedMessage  id='menu.logout'/>
-                        </Button>
+                    </span>
+                    <ItemList onClick={() => handleLogout()} link="/">
+                          <FormattedMessage id='menu.logout'/>
                     </ItemList>
                 </MenuList>
             </SideDrawer>

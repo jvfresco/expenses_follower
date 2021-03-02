@@ -1,7 +1,7 @@
 import {email, required, length} from '../../utils/validators'
 import AuthForm from './AuthForm'
 import Input from '../../components/UI/Input/Input'
-import Button from '../../components/UI/Button/Button'
+import {Button, Link} from '../../components/UI/Button/Button'
 import { FormattedMessage, useIntl } from 'react-intl';
 import {useForm} from '../form_utils/form_utils'
 
@@ -61,9 +61,9 @@ const Login = ({onSubmit, isLoading, isError, isSuccess}) => {
               </Button>
             </form>
             <FormattedMessage id='modal.signup' />
-            <Button design="raised" link="/signup">
+            <Link design="raised" link="/signup">
                 <FormattedMessage id='menu.signup' />
-            </Button>
+            </Link>
           </AuthForm>
         );
 }

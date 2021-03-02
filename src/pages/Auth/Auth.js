@@ -23,7 +23,7 @@ const Auth = ({loginHandler, signupHandler}) => {
     return (
         <Fragment>
         <Backdrop />
-        <Modal title={"LOGIN"}>
+        <Modal title={"EXPENSES FOLLOWER"}>
           <Switch>
             <Route
               path="/"

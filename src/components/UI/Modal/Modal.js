@@ -2,10 +2,9 @@
 /* @jsxImportSource @emotion/react */
 import { css, jsx } from '@emotion/react'
 import ReactDOM from 'react-dom';
-import {Fragment} from 'react'
 import {FormattedMessage} from 'react-intl'
 
-import Button from '../Button/Button';
+import {Button} from '../Button/Button';
 
 
 const modal = (props) =>{

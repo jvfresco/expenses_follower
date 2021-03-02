@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { FormattedMessage } from 'react-intl';
 
 const ThemeToggler = () => {
     const [theme, setTheme] = React.useState('light')
@@ -10,7 +10,7 @@ const ThemeToggler = () => {
 
     return (
       <span onClick={() => setTheme(nextTheme)}>
-        {nextTheme} theme
+        {nextTheme === 'dark' ?  <FormattedMessage id='theme.dark'/> : <FormattedMessage id='theme.light'/>}
       </span>
     )
 

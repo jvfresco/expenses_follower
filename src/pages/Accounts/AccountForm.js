@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import Input from '../../components/UI/Input/Input'
-import Button from '../../components/UI/Button/Button'
+import {Button} from '../../components/UI/Button/Button'
 import {required, length} from '../../utils/validators'
 import {FormattedMessage, useIntl} from 'react-intl'
 import {useForm} from '../form_utils/form_utils'

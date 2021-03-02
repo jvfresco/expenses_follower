@@ -8,6 +8,7 @@ const setAutoLogout = (milliseconds, logoutHandler) => {
 };
 
 async function getUser(logoutHandler){
+  console.log(logoutHandler)
   const token = localStorage.getItem("token");
     const expiryDate = localStorage.getItem("expiryDate");
     if (!token || !expiryDate) {
@@ -27,10 +28,11 @@ async function getUser(logoutHandler){
 function handleUserResponse({token, userId}){
     localStorage.setItem("token", token);
     localStorage.setItem("userId", userId);
-    const remainingMilliseconds = 60 * 60 * 1000;
+    // const remainingMilliseconds = 60 * 60 * 1000;
+    const remainingMilliseconds = 5000;
     const expiryDate = new Date(new Date().getTime() + remainingMilliseconds);
     localStorage.setItem("expiryDate", expiryDate.toISOString());
-    //setAutoLogout(remainingMilliseconds);
+    setAutoLogout(remainingMilliseconds);
     return {token, userId}
 }
 
@@ -59,4 +61,10 @@ async function client(endpoint, data) {
     })
   }
 
-  export {login, signup, getUser}
+  async function logout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("expiryDate");
+    localStorage.removeItem("userId");
+  }
+
+  export {login, signup, getUser, logout}
