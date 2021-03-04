@@ -1,3 +1,5 @@
+/* @jsxImportSource @emotion/react */
+import { css, jsx } from '@emotion/react'
 import {email, required, length} from '../../utils/validators'
 import AuthForm from './AuthForm'
 import Input from '../../components/UI/Input/Input'
@@ -29,7 +31,7 @@ const Login = ({onSubmit, isLoading, isError, isSuccess}) => {
         return (
           <AuthForm>
             <form
-              style={{width: "65%", alignSelf: "center",}}
+              css={{width: "65%", alignSelf: "center",}}
               onSubmit={(e) => handleFormSubmit(e, state, onSubmit, inputChangeHandler, Object.keys(state)[0])}
             >
               <Input
@@ -56,13 +58,15 @@ const Login = ({onSubmit, isLoading, isError, isSuccess}) => {
                 placeholder={intl.formatMessage({id:'form.password'})}
                 validationMessage={<FormattedMessage id='validation.password' />}
               />
-              <Button design="raised" type="submit" loading={isLoading}>
+              <Button design="primary" type="submit" loading={isLoading} css={{width:'100%'}}>
                 <FormattedMessage id='menu.login' />
               </Button>
             </form>
-            <FormattedMessage id='modal.signup' />
+            <h2 css={{color: 'var(--colors-menu-text)', padding: '1rem 2rem'}}><FormattedMessage id='modal.signup' /></h2>
             <Link design="raised" link="/signup">
+              <Button design="secondary" css={{width:'30%', padding:'.5rem 1rem'}}>
                 <FormattedMessage id='menu.signup' />
+              </Button>
             </Link>
           </AuthForm>
         );

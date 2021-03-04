@@ -14,46 +14,58 @@ import { useAsync } from './utils/hooks'
 function App(props) {
   const {data: user, run, isLoading, isError, isSuccess, setData} = useAsync()
   let history = useHistory();
+
   const logoutHandler = useCallback(() => {
     setData(null)
     localStorage.removeItem("token");
     localStorage.removeItem("expiryDate");
     localStorage.removeItem("userId");
-  },[setData]);
+    history.push('/global')
+  },[setData, history]);
   
   useLayoutEffect(() => {
-    console.log('run')
     run(auth_provider.getUser(logoutHandler))
   },[run, logoutHandler])
 
+  //TODO: SET AND OBTAIN THEME FROM STORAGE IF EXISTS
+  useLayoutEffect(() => {
+    document.body.dataset.theme = 'light'
+  }, [])
 
-  const login = authData => auth_provider.login(authData).then(user => {
+
+  const login = authData => auth_provider.login(authData, logoutHandler).then(user => {
     setData(user)
     history.push('/global')
   })
 
   const signup = authData => auth_provider.signup(authData).then(response => {
-    history.push('/')
+    history.push('/global')
   })
 
   return (
+    user 
+    ?
     <div css={{display:'flex'}}>
       <Navbar onLogout={logoutHandler}/>
-      {user ? (
-        <Switch>
-          <Route path="/global" exact render={(props) => <GlobalView {...props} />} />
-          <Route path="/expenses" exact render={(props) => <ExpensesPage {...props} userId={user.userId} token={user.token}/>} />
-          <Route path="/accounts" exact render={(props) => <AccountsPage {...props} userId={user.userId} token={user.token}/>} />
-          <Route path="/categories" exact render={(props) => <CategoriesPage {...props} userId={user.userId} token={user.token} purpose='expense'/>} />
-        </Switch>
-      ) : (
-        <Auth
-          loginHandler={login}
-          signupHandler={signup}
-        />
-      )}
+      <Switch>
+        <Route path="/global" exact>
+          <GlobalView {...props} />
+        </Route>
+        <Route path="/expenses" exact>
+          <ExpensesPage {...props} userId={user.userId} token={user.token}/>
+        </Route>
+        <Route path="/accounts" exact>
+        < AccountsPage {...props} userId={user.userId} token={user.token}/>
+        </Route>
+        <Route path="/categories" exact>
+          <CategoriesPage {...props} userId={user.userId} token={user.token} purpose='expense'/>
+        </Route>
+      </Switch>
     </div>
-  );
+    :
+    <Auth loginHandler={login} signupHandler={signup}/>
+    
+    );
 }
 
 export default App;

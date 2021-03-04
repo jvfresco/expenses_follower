@@ -44,7 +44,8 @@ const MenuList = styled.ul(
 );
 
 const styleItem = {
-  margin: "1.25rem 0",
+  width: "90%",
+  padding: "1.25rem 1rem",
   fontSize: "2rem",
   marginRight: "1.5rem",
   cursor: "pointer",
@@ -91,9 +92,9 @@ const Navbar = (props) => {
                     <span css={styleItem}>
                         <ThemeToggle />
                     </span>
-                    <ItemList onClick={() => handleLogout()} link="/">
-                          <FormattedMessage id='menu.logout'/>
-                    </ItemList>
+                    <span onClick={() => handleLogout()} css={styleItem}>
+                      <FormattedMessage id='menu.logout'/>
+                    </span>
                 </MenuList>
             </SideDrawer>
     )

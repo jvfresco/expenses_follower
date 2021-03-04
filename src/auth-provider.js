@@ -7,37 +7,35 @@ const setAutoLogout = (milliseconds, logoutHandler) => {
   }, milliseconds);
 };
 
-async function getUser(logoutHandler){
-  console.log(logoutHandler)
+async function getUser(logoutHandler) {
   const token = localStorage.getItem("token");
-    const expiryDate = localStorage.getItem("expiryDate");
-    if (!token || !expiryDate) {
-      return;
-    }
-    if (new Date(expiryDate) <= new Date()) {
-      logoutHandler();
-      return;
-    }
-    const userId = localStorage.getItem("userId");
-    const remainingMilliseconds =
-      new Date(expiryDate).getTime() - new Date().getTime();
-    setAutoLogout(remainingMilliseconds, logoutHandler);
-  return {token, userId}
+  const expiryDate = localStorage.getItem("expiryDate");
+  if (!token || !expiryDate) {
+    return;
+  }
+  if (new Date(expiryDate) <= new Date()) {
+    logoutHandler();
+    return;
+  }
+  const userId = localStorage.getItem("userId");
+  const remainingMilliseconds =
+    new Date(expiryDate).getTime() - new Date().getTime();
+  setAutoLogout(remainingMilliseconds, logoutHandler);
+  return { token, userId };
 }
 
-function handleUserResponse({token, userId}){
+function handleUserResponse({token, userId}, logoutHandler){
     localStorage.setItem("token", token);
     localStorage.setItem("userId", userId);
-    // const remainingMilliseconds = 60 * 60 * 1000;
-    const remainingMilliseconds = 5000;
+    const remainingMilliseconds = 60 * 60 * 1000;
     const expiryDate = new Date(new Date().getTime() + remainingMilliseconds);
     localStorage.setItem("expiryDate", expiryDate.toISOString());
-    setAutoLogout(remainingMilliseconds);
+    setAutoLogout(remainingMilliseconds, logoutHandler);
     return {token, userId}
 }
 
-function login({email, password}) {
-    return client('login', {email, password}).then(handleUserResponse)
+function login({email, password}, logoutHandler) {
+    return client('login', {email, password}).then(res => handleUserResponse(res, logoutHandler))
   }
 
 function signup({email, password, name}) {

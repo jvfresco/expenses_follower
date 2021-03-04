@@ -52,7 +52,7 @@ const AccountForm = (props) => {
                 placeholder={intl.formatMessage({id:'account.position'})}
                 validationMessage={<FormattedMessage id='validation.required' />}
               />
-              <Button design="raised" type="submit" loading={props.loading}>
+              <Button design="primary" type="submit" loading={props.loading}>
                 <FormattedMessage id='button.save' />
               </Button>
         </form>

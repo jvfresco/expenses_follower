@@ -144,7 +144,7 @@ const ExpenseForm = (props) => {
                 options={[{id: "1", name:"type1"}, {id: "2", name:"type2"}]}
                 data-testid = "type-input"
               />
-              <Button design="raised" type="submit" loading={props.loading}>
+              <Button design="primary" type="submit" loading={props.loading}>
                 <FormattedMessage id='button.save' />
               </Button>
         </form>

@@ -4,11 +4,15 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from 'react-router-dom'
+import {QueryClient, QueryClientProvider} from 'react-query'
+
 
 import en from './translations/en.json'; // translation -1
 import es from './translations/es.json'; // translation -2
 
 import { IntlProvider } from 'react-intl';
+
+const queryClient = new QueryClient()
 
 var locale = (navigator.languages && navigator.languages[0]) || navigator.language || navigator.userLanguage || 'en-US';
 const msg = {
@@ -18,13 +22,17 @@ const msg = {
 
 const message = (locale === 'en-US') ? en : Object.assign({}, en, msg[locale]);
 
+
+
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <IntlProvider locale="es" messages={message}> 
-        <App />
-      </IntlProvider>
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <IntlProvider locale="es" messages={message}> 
+          <App />
+        </IntlProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

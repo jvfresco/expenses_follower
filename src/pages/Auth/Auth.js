@@ -25,20 +25,7 @@ const Auth = ({loginHandler, signupHandler}) => {
         <Backdrop />
         <Modal title={"EXPENSES FOLLOWER"}>
           <Switch>
-            <Route
-              path="/"
-              exact
-              render={(props) => (
-                <Login
-                  {...props}
-                  isLoading={isLoading}
-                  isError={isError}
-                  isSuccess={isSuccess}
-                  onSubmit={handleLogin}
-                />
-              )}
-            />
-            <Route
+          <Route
               path="/signup"
               exact
               render={(props) => (
@@ -48,6 +35,19 @@ const Auth = ({loginHandler, signupHandler}) => {
                   isError={isError}
                   isSuccess={isSuccess}
                   onSubmit={handleSignup}
+                />
+              )}
+            />
+            <Route
+              path="/global"
+              exact
+              render={(props) => (
+                <Login
+                  {...props}
+                  isLoading={isLoading}
+                  isError={isError}
+                  isSuccess={isSuccess}
+                  onSubmit={handleLogin}
                 />
               )}
             />

@@ -34,7 +34,7 @@ const CategoryForm = (props) => {
                 validationMessage={<FormattedMessage id='validation.length3' />}
               />
               
-              <Button design="raised" type="submit" loading={props.loading}>
+              <Button design="primary" type="submit" loading={props.loading}>
                 <FormattedMessage id='button.save' />
               </Button>
         </form>

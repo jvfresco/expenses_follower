@@ -48,7 +48,7 @@ const modal = (props) =>{
         transform: translateX(-50%);
         left: 50%;
         top: 20vh;
-        background-color: #126afb;
+        background-color: var(--colors-primary);
         border-radius: 5px;
         z-index: 200;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
@@ -65,9 +65,9 @@ const modal = (props) =>{
         <h1
           css={css`
             font-size: 3rem;
-            color: #126afb;
+            color: var(--colors-primary);
             padding: 1rem 0;
-            background-color: #fab83f;
+            background-color: var(--colors-menu-text-hover);
             text-align: center;
           `}
         >
