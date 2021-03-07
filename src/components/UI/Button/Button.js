@@ -1,8 +1,8 @@
 /* @jsxImportSource @emotion/react */
 import { css, jsx } from '@emotion/react'
 import styled from '@emotion/styled/macro'
-import React from 'react';
 import { Link as RouteLink, useRouteMatch } from 'react-router-dom';
+import Spinner from '../Spinner/Spinner'
 
 const StyledButton = styled.button(
   {
@@ -50,6 +50,8 @@ const Link = (props) => {
 };
 
 const Button = ({onClick, loading, disabled, type, design, children, ...props}) => (
+
+  
   <StyledButton
       onClick={onClick}
       disabled={disabled || loading}
@@ -57,8 +59,8 @@ const Button = ({onClick, loading, disabled, type, design, children, ...props}) 
       design={design}
       {...props}
     >
-      {loading ? 'Loading...' : children}
-    </StyledButton>
+      { loading ? <Spinner/>  : children}  
+  </StyledButton>
 )
 
 

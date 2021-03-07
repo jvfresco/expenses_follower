@@ -54,7 +54,7 @@ const input = props => {
 
   //+ symbol before booleans avoids a warning caused by emotion painting the boolean into the DOM
 return (
-  <div className="input" style={{margin: "2rem 0"}}>
+  <div className="input" style={{margin: "2rem 0", textAlign:'left'}}>
     
     {props.control === 'input' && (
       <StyledInput

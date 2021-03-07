@@ -10,6 +10,9 @@ body[data-theme='light'] {
     --colors-menu-text: white;
     --colors-menu-text-hover: #fab83f;
     --colors-background: white;
+    --colors-table-row-odd: #5898ff;
+    --colors-table-row-even: #a1c1f5;
+    --colors-table-dark-text: #001029;
   }
 
 body[data-theme='dark'] {
@@ -23,5 +26,8 @@ body[data-theme='dark'] {
     --colors-primary-highlight: lightgray;
     --colors-menu-text: white;
     --colors-menu-text-hover: #fab83f;
-    --colors-background: black;
+    --colors-background: rgb(44, 44, 44);
+    --colors-table-row-odd: #5898ff;
+    --colors-table-row-even: #a1c1f5;
+    --colors-table-dark-text: #001029;
   }

@@ -8,6 +8,7 @@ const ThemeToggler = () => {
       document.body.dataset.theme = theme
     }, [theme])
 
+    
     return (
       <span onClick={() => setTheme(nextTheme)}>
         {nextTheme === 'dark' ?  <FormattedMessage id='theme.dark'/> : <FormattedMessage id='theme.light'/>}

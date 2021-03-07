@@ -48,18 +48,29 @@ function App(props) {
     <div css={{display:'flex'}}>
       <Navbar onLogout={logoutHandler}/>
       <Switch>
-        <Route path="/global" exact>
-          <GlobalView {...props} />
-        </Route>
-        <Route path="/expenses" exact>
-          <ExpensesPage {...props} userId={user.userId} token={user.token}/>
-        </Route>
-        <Route path="/accounts" exact>
-        < AccountsPage {...props} userId={user.userId} token={user.token}/>
-        </Route>
-        <Route path="/categories" exact>
-          <CategoriesPage {...props} userId={user.userId} token={user.token} purpose='expense'/>
-        </Route>
+        <div css={{width: '100%', textAlign:'center', backgroundColor:'var(--colors-background)'}}>
+          <Route path="/global" exact>
+            <GlobalView {...props} />
+          </Route>
+          <Route path="/expenses" exact>
+            <ExpensesPage {...props} userId={user.userId} token={user.token}/>
+          </Route>
+          <Route path="/accounts" exact>
+            <AccountsPage {...props} userId={user.userId} token={user.token}/>
+          </Route>
+          <Route path="/expense-categories" exact>
+            <CategoriesPage {...props} userId={user.userId} token={user.token} purpose='expense'/>
+          </Route>
+          <Route path="/income-categories" exact>
+            <CategoriesPage {...props} userId={user.userId} token={user.token} purpose='income'/>
+          </Route>
+          <Route path="/payment-types" exact>
+            <CategoriesPage {...props} userId={user.userId} token={user.token} purpose=''/>
+          </Route>
+          <Route path="/collection-types" exact>
+            <CategoriesPage {...props} userId={user.userId} token={user.token} purpose=''/>
+          </Route>
+        </div>
       </Switch>
     </div>
     :

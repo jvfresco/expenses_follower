@@ -1,6 +1,6 @@
 /* @jsxImportSource @emotion/react */
 import { css, jsx } from '@emotion/react'
-import {useState} from 'react'
+import React, {useState} from 'react'
 import styled from '@emotion/styled/macro'
 import DrawerButton from './DrawerButton/DrawerButton'
 import '../../css-vars.css'
@@ -56,11 +56,15 @@ const styleItem = {
 }
 
 const ItemList = styled(Link)(styleItem);
-    
+const SubItemList = styled(ItemList)({
+  fontSize: '1.4rem', 
+  fontWeight: '600', 
+  margin: '0 0 0 1.5rem'
+})    
 
 const Navbar = (props) => {
     const [active, setActive] = useState(false)
-
+    const [dropdown, setDropdown] = useState(false)
     const handleNavbarActivity = () => {
         setActive(active => !active)
     }
@@ -71,33 +75,55 @@ const Navbar = (props) => {
     }
 
     return (
-            <SideDrawer active={active}>
-                <DrawerButton handleClick={() => handleNavbarActivity()} active={active}/>
-                <MenuList active={active}>
-                    <ItemList link='/global'>
-                        <FormattedMessage  id='menu.position'/>
-                    </ItemList>
-                    <ItemList link="/expenses">
-                          <FormattedMessage  id='menu.expenses'/>
-                    </ItemList>
-                    <ItemList link="/incomes">
-                        <FormattedMessage  id='menu.incomes'/>
-                    </ItemList>
-                    <ItemList link="/accounts">
-                          <FormattedMessage  id='menu.accounts'/>
-                    </ItemList>
-                    <ItemList link="/categories">
-                          <FormattedMessage  id='menu.categories'/>
-                    </ItemList>
-                    <span css={styleItem}>
-                        <ThemeToggle />
-                    </span>
-                    <span onClick={() => handleLogout()} css={styleItem}>
-                      <FormattedMessage id='menu.logout'/>
-                    </span>
-                </MenuList>
-            </SideDrawer>
-    )
+      <SideDrawer active={active}>
+        <DrawerButton
+          handleClick={() => handleNavbarActivity()}
+          active={active}
+        />
+        <MenuList active={active}>
+          <ItemList link="/global">
+            <FormattedMessage id="menu.position" />
+          </ItemList>
+          <ItemList link="/expenses">
+            <FormattedMessage id="menu.expenses" />
+          </ItemList>
+          <ItemList link="/incomes">
+            <FormattedMessage id="menu.incomes" />
+          </ItemList>
+          <ItemList link="/accounts">
+            <FormattedMessage id="menu.accounts" />
+          </ItemList>
+          <span
+            css={styleItem}
+            onClick={() => setDropdown((dropdown) => !dropdown)}
+          >
+            <FormattedMessage id="menu.categories" />
+          </span>
+          {dropdown ? (
+            <React.Fragment>
+              <SubItemList link="/expense-categories">
+                <FormattedMessage id="menu.expenseCategories" />
+              </SubItemList>
+              <SubItemList link="/income-categories">
+                <FormattedMessage id="menu.incomeCategories" />
+              </SubItemList>
+              <SubItemList link="/payment-types">
+                <FormattedMessage id="menu.paymentTypes" />
+              </SubItemList>
+              <SubItemList link="/collection-types">
+                <FormattedMessage id="menu.collectionTypes" />
+              </SubItemList>
+            </React.Fragment>
+          ) : null}
+          <span css={styleItem}>
+            <ThemeToggle />
+          </span>
+          <span onClick={() => handleLogout()} css={styleItem}>
+            <FormattedMessage id="menu.logout" />
+          </span>
+        </MenuList>
+      </SideDrawer>
+    );
 }
 
 export default Navbar

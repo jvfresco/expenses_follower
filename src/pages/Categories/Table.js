@@ -1,30 +1,26 @@
-import {useTable} from 'react-table'
-
-const Table = ({columns, data}) => {
+/* @jsxImportSource @emotion/react */
+import { css, jsx } from '@emotion/react'
+import {useTable, useExpanded} from 'react-table'
+import React from 'react'
+const Table = ({columns, data, renderRowSubComponent}) => {
     const {
       getTableProps,
       getTableBodyProps,
       headerGroups,
       rows,
       prepareRow,
-    } = useTable({ columns, data });
-
-    return (
-      // apply the table props
-      <table {...getTableProps()}>
+    } = useTable({ columns, data },useExpanded);
+  
+    return data.length > 0 ? (
+      <table {...getTableProps()} css={{width: '100%', textAlign: 'left',  borderSpacing: '0 .5rem'}}>
         <thead>
           {
-            // Loop over the header rows
             headerGroups.map((headerGroup) => (
-              // Apply the header row props
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {
-                  // Loop over the headers in each row
                   headerGroup.headers.map((column) => (
-                    // Apply the header cell props
-                    <th {...column.getHeaderProps()}>
+                    <th {...column.getHeaderProps()} css={{fontSize: '1.6rem', paddingBottom: '2rem'}}>
                       {
-                        // Render the header
                         column.render("Header")
                       }
                     </th>
@@ -34,37 +30,54 @@ const Table = ({columns, data}) => {
             ))
           }
         </thead>
-        {/* Apply the table body props */}
         <tbody {...getTableBodyProps()}>
           {
-            // Loop over the table rows
             rows.map((row) => {
-              // Prepare the row for display
               prepareRow(row);
               return (
-                // Apply the row props
-                <tr {...row.getRowProps()}>
-                  {
-                    // Loop over the rows cells
-                    row.cells.map((cell) => {
-                      // Apply the cell props
-                      return (
-                        <td {...cell.getCellProps()}>
-                          {
-                            // Render the cell contents
-                            cell.render("Cell")
-                          }
-                        </td>
-                      );
-                    })
-                  }
-                </tr>
+                <React.Fragment>
+                  <tr {...row.getRowProps()} css={{
+      
+                    '&:nth-child(even)':{
+                      backgroundColor: 'var(--colors-table-row-even)',
+                      color: 'var(--colors-table-dark-text)'
+                    },
+                    '&:nth-child(odd)':{
+                      backgroundColor: 'var(--colors-table-row-odd)'
+                    }
+                  }}>
+                    {
+                      row.cells.map((cell) => {
+                        return (
+                          <td {...cell.getCellProps()} css={{
+                            padding: '.5rem 1rem',
+                            fontWeight: '600',
+                            fontSize: '1.2rem', 
+                          }}>
+                            {
+                              cell.render("Cell")
+                            }
+                          </td>
+                        );
+                      })
+                    }
+                  </tr>
+                  
+                  {row.isExpanded ?
+                  <tr>
+                    <td colSpan={columns.length}>
+                      {renderRowSubComponent(row.original._id)}
+                    </td>
+                  </tr>
+                  : null}
+                </React.Fragment>
               );
             })
           }
         </tbody>
       </table>
-    );
+    ) 
+    : null
 }
 
 export default Table
