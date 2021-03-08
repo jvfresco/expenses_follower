@@ -13,11 +13,6 @@ function useSafeDispatch(dispatch) {
   )
 }
 
-// Example usage:
-// const {data, error, status, run} = useAsync()
-// React.useEffect(() => {
-//   run(yourAsyncFetch(query))
-// }, [query, run])
 const defaultInitialState = {status: 'idle', data: null, error: null}
 function useAsync(initialState) {
   const initialStateRef = React.useRef({

@@ -10,73 +10,52 @@ import AccountsPage from './pages/Accounts/AccountsPage'
 import CategoriesPage from './pages/Categories/CategoriesPage'
 import * as auth_provider from './auth-provider'
 import { useAsync } from './utils/hooks'
+import {useQueryClient } from 'react-query'
+import {useAuth} from './context/auth-context'
 
 function App(props) {
-  const {data: user, run, isLoading, isError, isSuccess, setData} = useAsync()
-  let history = useHistory();
-
-  const logoutHandler = useCallback(() => {
-    setData(null)
-    localStorage.removeItem("token");
-    localStorage.removeItem("expiryDate");
-    localStorage.removeItem("userId");
-    history.push('/global')
-  },[setData, history]);
-  
-  useLayoutEffect(() => {
-    run(auth_provider.getUser(logoutHandler))
-  },[run, logoutHandler])
-
+  const {user} = useAuth()
   //TODO: SET AND OBTAIN THEME FROM STORAGE IF EXISTS
   useLayoutEffect(() => {
     document.body.dataset.theme = 'light'
   }, [])
 
-
-  const login = authData => auth_provider.login(authData, logoutHandler).then(user => {
-    setData(user)
-    history.push('/global')
-  })
-
-  const signup = authData => auth_provider.signup(authData).then(response => {
-    history.push('/global')
-  })
-
   return (
     user 
     ?
     <div css={{display:'flex'}}>
-      <Navbar onLogout={logoutHandler}/>
+      <Navbar/>
+      <div css={{width: '100%', textAlign:'center', backgroundColor:'var(--colors-background)'}}>
       <Switch>
-        <div css={{width: '100%', textAlign:'center', backgroundColor:'var(--colors-background)'}}>
+        
           <Route path="/global" exact>
             <GlobalView {...props} />
           </Route>
           <Route path="/expenses" exact>
-            <ExpensesPage {...props} userId={user.userId} token={user.token}/>
+            <ExpensesPage {...props}/>
           </Route>
           <Route path="/accounts" exact>
-            <AccountsPage {...props} userId={user.userId} token={user.token}/>
+            <AccountsPage {...props}/>
           </Route>
           <Route path="/expense-categories" exact>
-            <CategoriesPage {...props} userId={user.userId} token={user.token} purpose='expense'/>
+            <CategoriesPage {...props} purpose='expense'/>
           </Route>
           <Route path="/income-categories" exact>
-            <CategoriesPage {...props} userId={user.userId} token={user.token} purpose='income'/>
+            <CategoriesPage {...props} purpose='income'/>
           </Route>
           <Route path="/payment-types" exact>
-            <CategoriesPage {...props} userId={user.userId} token={user.token} purpose=''/>
+            <CategoriesPage {...props} purpose=''/>
           </Route>
           <Route path="/collection-types" exact>
-            <CategoriesPage {...props} userId={user.userId} token={user.token} purpose=''/>
+            <CategoriesPage {...props} purpose=''/>
           </Route>
-        </div>
+        
       </Switch>
+      </div>
     </div>
     :
-    <Auth loginHandler={login} signupHandler={signup}/>
-    
-    );
+    <Auth/>
+  ) 
 }
 
 export default App;

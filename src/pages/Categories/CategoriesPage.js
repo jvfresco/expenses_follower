@@ -2,19 +2,13 @@
 import { css, jsx } from '@emotion/react'
 import React, {useMemo} from 'react'
 import CategoryForm from './CategoryForm'
-
-
 import Table from './Table'
-
 import {useCategories, useRemoveMutation} from './hooks'
 
-
 const CategoriesPage = (props) => {
-
   const type = props.purpose === 'expense' ? 'expense-category' : 'income-category'
-  
-  const { data: categories, isError, isLoading, isSuccess, error } = useCategories(props.token, type)
-  const {mutate: remove} = useRemoveMutation(props.token, type)
+  const { data: categories, isError, isLoading, isSuccess, error } = useCategories(type)
+  const {mutate: remove} = useRemoveMutation(type)
 
   const columns = useMemo(
     () => [
@@ -58,14 +52,10 @@ const CategoriesPage = (props) => {
     [remove]
   );
 
-    const rowSubComponent = React.useCallback(
-      (id) => (
-        <div>
-          <CategoryForm type={type} token={props.token} id={id}/>
-        </div>
-      ),
-      [props.token, type]
-    );
+  const rowSubComponent = React.useCallback(
+    (id) => <CategoryForm type={type} id={id}/>,
+    [type]
+  )
 
   return (
     <div css={{
@@ -82,7 +72,7 @@ const CategoriesPage = (props) => {
           ? "Add new expense category"
           : "Add new income category"}
       </h1>
-      <CategoryForm type={type} token={props.token} />
+      <CategoryForm type={type}/>
 
       <h1 css={{marginBottom: '4rem'}}>
         {props.purpose === "expense"

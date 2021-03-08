@@ -6,18 +6,18 @@ import {Fragment} from 'react'
 import Modal from '../../components/UI/Modal/Modal'
 import Backdrop from '../../components/UI/Backdrop/Backdrop'
 import { useAsync } from '../../utils/hooks.js'
+import {useAuth} from '../../context/auth-context'
 
 
-
-const Auth = ({loginHandler, signupHandler}) => {
+const Auth = () => {
     const {run, isLoading, isError, isSuccess} = useAsync()
-
+    const {login, signup} = useAuth()
     const handleLogin = (authData) => {
-      run(loginHandler(authData))
+      run(login(authData))
     }
 
     const handleSignup = (authData) => {
-      run(signupHandler(authData))
+      run(signup(authData))
     }
 
     return (

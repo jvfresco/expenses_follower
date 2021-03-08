@@ -8,9 +8,10 @@ import {FormattedMessage, useIntl} from 'react-intl'
 import {useForm} from '../form_utils/form_utils'
 import { useCreateMutation, useUpdateMutation, useRemoveMutation, useCategory } from './hooks'
 
-const CategoryForm = ({type, token, id}) => {
+
+const CategoryForm = ({type, id}) => {
     const intl = useIntl()
-    const {category} = useCategory(id, token, type) || {}
+    const {category} = useCategory(id, type) || {}
     const {state, inputChangeHandler, handleFormSubmit } = useForm({
         categoryForm: {
             category : {
@@ -22,9 +23,9 @@ const CategoryForm = ({type, token, id}) => {
         }
     })
 
-    const {mutate: create, isLoading: isCreating} = useCreateMutation(token, type)
-    const {mutate: update, isLoading: isUpdating} = useUpdateMutation(token, type, id)
-    const {mutate: remove, isLoading: isRemoving} = useRemoveMutation(token, type)
+    const {mutate: create, isLoading: isCreating} = useCreateMutation(type)
+    const {mutate: update, isLoading: isUpdating} = useUpdateMutation(type, id)
+    const {mutate: remove, isLoading: isRemoving} = useRemoveMutation(type)
 
     return (
       <div css={{marginBottom: '4rem'}}>

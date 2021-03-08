@@ -7,6 +7,7 @@ import '../../css-vars.css'
 import ThemeToggle from '../UI/ThemeToggle/ThemeToggle'
 import { FormattedMessage } from 'react-intl';
 import {Link} from '../UI/Button/Button'
+import {useAuth} from '../../context/auth-context'
 
 const SideDrawer = styled.div(
   {
@@ -17,7 +18,7 @@ const SideDrawer = styled.div(
     color: "var(--colors-menu-text)",
     left: "0",
     top: "0",
-    transition: "all 0.3s ease-out",
+    transition: "width 0.3s ease-out",
   },
   (props) => ({
     width: props.active ? "20rem" : "5rem",
@@ -62,7 +63,8 @@ const SubItemList = styled(ItemList)({
   margin: '0 0 0 1.5rem'
 })    
 
-const Navbar = (props) => {
+const Navbar = () => {
+    const {logoutHandler} = useAuth()
     const [active, setActive] = useState(false)
     const [dropdown, setDropdown] = useState(false)
     const handleNavbarActivity = () => {
@@ -71,7 +73,7 @@ const Navbar = (props) => {
 
     const handleLogout= () => {
       handleNavbarActivity()
-      props.onLogout() 
+      logoutHandler()
     }
 
     return (

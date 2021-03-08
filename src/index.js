@@ -3,47 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {BrowserRouter} from 'react-router-dom'
-import {QueryClient, QueryClientProvider} from 'react-query'
-import {ReactQueryDevtools} from 'react-query/devtools'
 
-
-import en from './translations/en.json'; // translation -1
-import es from './translations/es.json'; // translation -2
-
-import { IntlProvider } from 'react-intl';
-
-
-//TODO ADD ERROR BOUNDARIES
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-    },
-  },
-})
-
-var locale = (navigator.languages && navigator.languages[0]) || navigator.language || navigator.userLanguage || 'en-US';
-const msg = {
-    'en-US': en,
-    'es-ES': es
-};
-
-const message = (locale === 'en-US') ? en : Object.assign({}, en, msg[locale]);
-
-
+import AppProviders from './context'
 
 ReactDOM.render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <IntlProvider locale="es" messages={message}> 
+    <AppProviders>
           <App />
-          <ReactQueryDevtools initialIsOpen />
-        </IntlProvider>
-      </BrowserRouter>
-    </QueryClientProvider>
-  </React.StrictMode>,
+    </AppProviders>,    
   document.getElementById('root')
 );
 

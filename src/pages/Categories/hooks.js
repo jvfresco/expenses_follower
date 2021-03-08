@@ -1,61 +1,87 @@
-
 import {useQueryClient, useMutation, useQuery} from 'react-query'
-import {client} from '../../utils/api-client'
+import {useClient} from '../../context/auth-context'
 
-
-function DefaultMutationOptions(type){
-    const queryClient = useQueryClient();
+function defaultMutationOptions(type, queryClient){
     return{
-        onSettled: () => queryClient.invalidateQueries(type)
+        onSettled: () => queryClient.invalidateQueries(type),
+        onError: (err, variables, recover) => 
+          typeof recover === 'function' ? recover() : null
     }
 }
 
 
-const useCategories = (token, type) => {
+const useCategories = (type) => {
+  const client = useClient()
   return useQuery(type, () =>
-    client(`categories/${type}`, { token: token }).then(
+    client(`categories/${type}`).then(
       (res) => res.categories
     )
   );
 }
 
-const useCategory = (id, token, type) => {
-  const {data: categories} = useCategories(token, type)
+const useCategory = (id, type) => {
+  const {data: categories} = useCategories(type)
   return categories?.find(item => item._id === id) ?? null
 }
 
 
-const useRemoveMutation = (token, type) => {
+const useRemoveMutation = (type) => {
+  const queryClient = useQueryClient()
+  const client = useClient()
   return useMutation(
     (id) =>
       client(`categories/${type}`, {
         data: { categoryId: id },
-        token: token,
         method: "DELETE",
       }),
-    DefaultMutationOptions(type)
+      {
+        onMutate: (id) => {
+          queryClient.cancelQueries(type)
+          const previous = queryClient.getQueryData(type)
+          queryClient.setQueryData(type, (old) => {
+            return old.filter(item => item._id !== id )
+          })
+          return () => queryClient.setQueryData(type, previous)
+        } 
+      },
+    {...defaultMutationOptions(type, queryClient)}
   );
 };
 
-const useCreateMutation = (token, type) => {
-return  useMutation(
-  (data) =>
-    client(`categories/${type}`, {
-      data: { category: data.category },
-      token: token,
-    }),
-    DefaultMutationOptions(type)
-)
+const useCreateMutation = (type) => {
+  const queryClient = useQueryClient()
+  const client = useClient()
+  return  useMutation(
+    (data) =>
+      client(`categories/${type}`, {
+        data: { category: data.category }
+      }),
+      {...defaultMutationOptions(type, queryClient)}
+  )
 }
-const useUpdateMutation = (token, type, id) => {
+
+const useUpdateMutation = (type, id) => {
+  const queryClient = useQueryClient()
+  const client = useClient()
   return useMutation(
     (data) =>
       client(`categories/${type}`, {
         data: {category: data.category, categoryId: id},
-        token: token,
         method: 'PUT'
       }),
-      DefaultMutationOptions(type)
+      {
+        onMutate: (data) => {
+          queryClient.cancelQueries(type)
+          const previous = queryClient.getQueryData(type)
+          queryClient.setQueryData(type, (old) => {
+            return old.map(item => {
+              return item._id === id ? {...item, ...data} : item
+            })
+          })
+          return () => queryClient.setQueryData(type, previous)
+        }
+      },
+      {...defaultMutationOptions(type, queryClient)}
   )
 }
 

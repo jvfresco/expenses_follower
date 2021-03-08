@@ -1,10 +1,11 @@
 import ExpenseForm from './ExpenseForm'
 import {client} from '../../utils/api-client'
 import {useAsync} from '../../utils/hooks'
+import {useAuth} from '../../context/auth-context'
 
-const ExpensesPage = (props) =>  {
+const ExpensesPage = () =>  {
   const {data, error, run, isLoading, isError, isSuccess} = useAsync()
-
+  const {user} = useAuth()
   const onExpensePost = async(expenseData) => {
       run(client('/movements/expense', {
         data: {
@@ -16,7 +17,7 @@ const ExpensesPage = (props) =>  {
             type: expenseData.type ? expenseData.type : null,
             tax: expenseData.tax ? expenseData.tax : null,
         },
-        token: props.token
+        token: user.token
       }))
   }    
 

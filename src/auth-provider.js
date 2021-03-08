@@ -1,4 +1,3 @@
-
 const AUTH_URL = 'http://localhost:8080/auth/'
 
 const setAutoLogout = (milliseconds, logoutHandler) => {

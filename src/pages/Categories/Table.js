@@ -36,23 +36,15 @@ const Table = ({columns, data, renderRowSubComponent}) => {
               prepareRow(row);
               return (
                 <React.Fragment>
-                  <tr {...row.getRowProps()} css={{
-      
-                    '&:nth-child(even)':{
-                      backgroundColor: 'var(--colors-table-row-even)',
-                      color: 'var(--colors-table-dark-text)'
-                    },
-                    '&:nth-child(odd)':{
-                      backgroundColor: 'var(--colors-table-row-odd)'
-                    }
-                  }}>
+                  <tr {...row.getRowProps()}>
                     {
                       row.cells.map((cell) => {
                         return (
                           <td {...cell.getCellProps()} css={{
                             padding: '.5rem 1rem',
                             fontWeight: '600',
-                            fontSize: '1.2rem', 
+                            fontSize: '1.2rem',
+                            backgroundColor: 'var(--colors-table-row)' 
                           }}>
                             {
                               cell.render("Cell")
@@ -64,8 +56,8 @@ const Table = ({columns, data, renderRowSubComponent}) => {
                   </tr>
                   
                   {row.isExpanded ?
-                  <tr>
-                    <td colSpan={columns.length}>
+                  <tr key={row.original._id}>
+                    <td key={row.original._id} colSpan={columns.length}>
                       {renderRowSubComponent(row.original._id)}
                     </td>
                   </tr>
