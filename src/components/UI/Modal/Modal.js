@@ -6,19 +6,34 @@ import {FormattedMessage} from 'react-intl'
 
 import {Button} from '../Button/Button';
 
+//TODO: Create closing button, context for all modal?
+const ModalCloseButton = () => {
 
-const modal = (props) =>{
+}
 
-  let portalRoot = document.getElementById('modal-root')
-  if(!portalRoot){
-    portalRoot = document.createElement('div')
-    portalRoot.setAttribute('id', 'modal-root')
-    document.body.appendChild(portalRoot)
-  }
+const ModalTitle = (props) => (
+  <header
+        className="modal__header"
+        css={css`
+          border-bottom: 2px solid #fff;
+        `}
+      >
+        <h1
+          css={css`
+            font-size: 3rem;
+            color: var(--colors-primary);
+            padding: 1rem 0;
+            background-color: var(--colors-menu-text-hover);
+            text-align: center;
+          `}
+        >
+          {props.title}
+        </h1>
+      </header>
+)
 
-  let actions = props.actions ? (
-    <div
-        className="modal__actions"
+const ModalActionButtons = (props) => (
+  <div
         css={css`
           padding: 1rem;
           text-align: right;
@@ -36,7 +51,28 @@ const modal = (props) =>{
           <FormattedMessage id='button.accept'/>
         </Button>
       </div>
-  ) : null
+)
+
+const ModalContent = (props) => (
+    <div
+        className="modal__content"
+        css={css`
+          padding: 1rem;
+          text-align:center;
+        `}
+      >
+        {props.children}
+      </div>
+)
+
+const Modal = (props) =>{
+
+  let portalRoot = document.getElementById('modal-root')
+  if(!portalRoot){
+    portalRoot = document.createElement('div')
+    portalRoot.setAttribute('id', 'modal-root')
+    document.body.appendChild(portalRoot)
+  }
 
   return(
   ReactDOM.createPortal(
@@ -55,39 +91,12 @@ const modal = (props) =>{
         
       `}
     >
+      {props.children}
       
-      <header
-        className="modal__header"
-        css={css`
-          border-bottom: 2px solid #fff;
-        `}
-      >
-        <h1
-          css={css`
-            font-size: 3rem;
-            color: var(--colors-primary);
-            padding: 1rem 0;
-            background-color: var(--colors-menu-text-hover);
-            text-align: center;
-          `}
-        >
-          {props.title}
-        </h1>
-      </header>
-      <div
-        className="modal__content"
-        css={css`
-          padding: 1rem;
-          text-align:center;
-        `}
-      >
-        {props.children}
-      </div>
-      {actions}
     </div>
     ,
     portalRoot
   )
 
   )}
-export default modal;
+export {Modal, ModalContent, ModalCloseButton, ModalActionButtons, ModalTitle};

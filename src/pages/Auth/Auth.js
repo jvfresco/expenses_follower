@@ -3,7 +3,7 @@ import Login from './Login.js'
 import Signup from './Signup'
 import { Switch, Route } from 'react-router-dom'
 import {Fragment} from 'react'
-import Modal from '../../components/UI/Modal/Modal'
+import {Modal, ModalTitle, ModalContent} from '../../components/UI/Modal/Modal'
 import Backdrop from '../../components/UI/Backdrop/Backdrop'
 import { useAsync } from '../../utils/hooks.js'
 import {useAuth} from '../../context/auth-context'
@@ -23,35 +23,38 @@ const Auth = () => {
     return (
         <Fragment>
         <Backdrop />
-        <Modal title={"EXPENSES FOLLOWER"}>
-          <Switch>
-          <Route
-              path="/signup"
-              exact
-              render={(props) => (
-                <Signup
-                  {...props}
-                  isLoading={isLoading}
-                  isError={isError}
-                  isSuccess={isSuccess}
-                  onSubmit={handleSignup}
+        <Modal>
+          <ModalTitle title={"EXPENSES FOLLOWER"}/>
+            <ModalContent>
+              <Switch>
+              <Route
+                  path="/signup"
+                  exact
+                  render={(props) => (
+                    <Signup
+                      {...props}
+                      isLoading={isLoading}
+                      isError={isError}
+                      isSuccess={isSuccess}
+                      onSubmit={handleSignup}
+                    />
+                  )}
                 />
-              )}
-            />
-            <Route
-              path="/global"
-              exact
-              render={(props) => (
-                <Login
-                  {...props}
-                  isLoading={isLoading}
-                  isError={isError}
-                  isSuccess={isSuccess}
-                  onSubmit={handleLogin}
+                <Route
+                  path="/global"
+                  exact
+                  render={(props) => (
+                    <Login
+                      {...props}
+                      isLoading={isLoading}
+                      isError={isError}
+                      isSuccess={isSuccess}
+                      onSubmit={handleLogin}
+                    />
+                  )}
                 />
-              )}
-            />
-          </Switch>
+              </Switch>
+            </ModalContent>
         </Modal>
       </Fragment>
     )

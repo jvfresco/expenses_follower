@@ -1,41 +1,39 @@
 const AUTH_URL = 'http://localhost:8080/auth/'
 
-const setAutoLogout = (milliseconds, logoutHandler) => {
-  setTimeout(() => {
-    logoutHandler();
-  }, milliseconds);
-};
-
-async function getUser(logoutHandler) {
+async function getUser() {
   const token = localStorage.getItem("token");
   const expiryDate = localStorage.getItem("expiryDate");
   if (!token || !expiryDate) {
     return;
   }
   if (new Date(expiryDate) <= new Date()) {
-    logoutHandler();
+    logout();
     return;
   }
   const userId = localStorage.getItem("userId");
   const remainingMilliseconds =
     new Date(expiryDate).getTime() - new Date().getTime();
-  setAutoLogout(remainingMilliseconds, logoutHandler);
-  return { token, userId };
+  return { token, userId, remainingMilliseconds };
 }
 
-function handleUserResponse({token, userId}, logoutHandler){
+async function setAutoLogout(logoutHandler, miliseconds){
+  const remainingMilliseconds = miliseconds ? miliseconds : 60 * 60 * 1000;
+  const expiryDate = new Date(new Date().getTime() + remainingMilliseconds);
+  localStorage.setItem("expiryDate", expiryDate.toISOString());
+  setTimeout(() => {
+    logoutHandler();
+  }, remainingMilliseconds);
+}
+
+function handleUserResponse({token, userId}){
     localStorage.setItem("token", token);
     localStorage.setItem("userId", userId);
-    const remainingMilliseconds = 60 * 60 * 1000;
-    const expiryDate = new Date(new Date().getTime() + remainingMilliseconds);
-    localStorage.setItem("expiryDate", expiryDate.toISOString());
-    setAutoLogout(remainingMilliseconds, logoutHandler);
     return {token, userId}
 }
 
-function login({email, password}, logoutHandler) {
-    return client('login', {email, password}).then(res => handleUserResponse(res, logoutHandler))
-  }
+async function login({email, password}) {
+    return client('login', {email, password}).then(res => handleUserResponse(res))
+}
 
 function signup({email, password, name}) {
     return client('signup', {email, password, name})
@@ -64,4 +62,4 @@ async function client(endpoint, data) {
     localStorage.removeItem("userId");
   }
 
-  export {login, signup, getUser, logout}
+  export {login, signup, getUser, logout, setAutoLogout}

@@ -1,16 +1,13 @@
 /* @jsxImportSource @emotion/react */
 import { css, jsx } from '@emotion/react'
 import Navbar from './components/Navigation/Navbar'
-import { Switch, Route, useHistory} from 'react-router-dom'
-import { useLayoutEffect, useCallback } from 'react'
+import { Switch, Route} from 'react-router-dom'
+import { useLayoutEffect} from 'react'
 import GlobalView from './pages/GlobalView/GlobalView'
 import Auth from './pages/Auth/Auth'
 import ExpensesPage from './pages/Expenses/ExpensesPage'
 import AccountsPage from './pages/Accounts/AccountsPage'
 import CategoriesPage from './pages/Categories/CategoriesPage'
-import * as auth_provider from './auth-provider'
-import { useAsync } from './utils/hooks'
-import {useQueryClient } from 'react-query'
 import {useAuth} from './context/auth-context'
 
 function App(props) {

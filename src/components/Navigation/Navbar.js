@@ -64,7 +64,7 @@ const SubItemList = styled(ItemList)({
 })    
 
 const Navbar = () => {
-    const {logoutHandler} = useAuth()
+    const {logout} = useAuth()
     const [active, setActive] = useState(false)
     const [dropdown, setDropdown] = useState(false)
     const handleNavbarActivity = () => {
@@ -73,7 +73,7 @@ const Navbar = () => {
 
     const handleLogout= () => {
       handleNavbarActivity()
-      logoutHandler()
+      logout()
     }
 
     return (
