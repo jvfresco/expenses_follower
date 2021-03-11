@@ -13,7 +13,7 @@ function defaultMutationOptions(type, queryClient){
 const useCategories = (type) => {
   const client = useClient()
   return useQuery(type, () =>
-    client(`categories/${type}`).then(
+    client(`categories${type}`).then(
       (res) => res.categories
     )
   );
@@ -30,7 +30,7 @@ const useRemoveMutation = (type) => {
   const client = useClient()
   return useMutation(
     (id) =>
-      client(`categories/${type}`, {
+      client(`categories${type}`, {
         data: { categoryId: id },
         method: "DELETE",
       }),
@@ -53,8 +53,8 @@ const useCreateMutation = (type) => {
   const client = useClient()
   return  useMutation(
     (data) =>
-      client(`categories/${type}`, {
-        data: { category: data.category }
+      client(`categories${type}`, {
+        data: { name: data.name }
       }),
       {...defaultMutationOptions(type, queryClient)}
   )
@@ -65,8 +65,8 @@ const useUpdateMutation = (type, id) => {
   const client = useClient()
   return useMutation(
     (data) =>
-      client(`categories/${type}`, {
-        data: {category: data.category, categoryId: id},
+      client(`categories${type}`, {
+        data: {name: data.name, categoryId: id},
         method: 'PUT'
       }),
       {

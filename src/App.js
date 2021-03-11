@@ -9,6 +9,7 @@ import ExpensesPage from './pages/Expenses/ExpensesPage'
 import AccountsPage from './pages/Accounts/AccountsPage'
 import CategoriesPage from './pages/Categories/CategoriesPage'
 import {useAuth} from './context/auth-context'
+import * as CATEGORY from './pages/Categories/category_types'
 
 function App(props) {
   const {user} = useAuth()
@@ -34,17 +35,17 @@ function App(props) {
           <Route path="/accounts" exact>
             <AccountsPage {...props}/>
           </Route>
-          <Route path="/expense-categories" exact>
-            <CategoriesPage {...props} purpose='expense'/>
+          <Route path={CATEGORY.EXPENSE} exact>
+            <CategoriesPage {...props} type={CATEGORY.EXPENSE}/>
           </Route>
-          <Route path="/income-categories" exact>
-            <CategoriesPage {...props} purpose='income'/>
+          <Route path={CATEGORY.INCOME} exact>
+            <CategoriesPage {...props} type={CATEGORY.INCOME}/>
           </Route>
-          <Route path="/payment-types" exact>
-            <CategoriesPage {...props} purpose=''/>
+          <Route path={CATEGORY.PAYMENT} exact>
+            <CategoriesPage {...props} type={CATEGORY.PAYMENT} />
           </Route>
-          <Route path="/collection-types" exact>
-            <CategoriesPage {...props} purpose=''/>
+          <Route path={CATEGORY.COLLECTION} exact>
+            <CategoriesPage {...props} type={CATEGORY.COLLECTION}/>
           </Route>
         
       </Switch>

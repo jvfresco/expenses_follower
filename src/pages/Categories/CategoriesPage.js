@@ -4,21 +4,23 @@ import React, {useMemo} from 'react'
 import CategoryForm from './CategoryForm'
 import Table from './Table'
 import {useCategories, useRemoveMutation} from './hooks'
+import * as CATEGORY from './category_types'
+import {FormattedMessage} from 'react-intl'
 
-const CategoriesPage = (props) => {
-  const type = props.purpose === 'expense' ? 'expense-category' : 'income-category'
+const CategoriesPage = ({type}) => {
+  
   const { data: categories, isError, isLoading, isSuccess, error } = useCategories(type)
   const {mutate: remove} = useRemoveMutation(type)
-
+  console.log(categories)
   const columns = useMemo(
     () => [
       {
-        Header: "Category name", //Column name
-        accessor: "category", // name of the key in data
+        Header: <FormattedMessage id="category.category" />, //Column name
+        accessor: "name", // name of the key in data
       },
       {
         // expander cell
-        Header: "Edit", // No header
+        Header: <FormattedMessage id="table.edit" />, // No header
         id: "expander", 
         Cell: ({ row, rows }) => (
           <span
@@ -40,7 +42,7 @@ const CategoriesPage = (props) => {
         SubCell: () => null, 
       },
       {
-        Header: "Delete",
+        Header: <FormattedMessage id="table.delete" />,
         id: "delete",
         Cell: ({row}) => (
           <span onClick={() => remove(row.original._id)}>
@@ -56,6 +58,38 @@ const CategoriesPage = (props) => {
     (id) => <CategoryForm type={type} id={id}/>,
     [type]
   )
+  
+  let headers = {}
+
+  switch (type) {
+    case CATEGORY.EXPENSE:
+      headers = {
+        formHeader: <FormattedMessage id="category.form.header.expense" />,
+        tableHeader: <FormattedMessage id="category.table.header.expense" />,
+      };
+      break;
+    case CATEGORY.INCOME:
+      headers = {
+        formHeader: <FormattedMessage id="category.form.header.income" />,
+        tableHeader: <FormattedMessage id="category.table.header.income" />,
+      };
+      break;
+    case CATEGORY.PAYMENT:
+      headers = {
+        formHeader: <FormattedMessage id="category.form.header.payment" />,
+        tableHeader: <FormattedMessage id="category.table.header.payment" />,
+      };
+      break;
+    case CATEGORY.COLLECTION:
+      headers = {
+        formHeader: <FormattedMessage id="category.form.header.collection" />,
+        tableHeader: <FormattedMessage id="category.table.header.collection" />,
+      };
+      break;
+    default:
+      break;
+  }
+  
 
   return (
     <div css={{
@@ -68,18 +102,15 @@ const CategoriesPage = (props) => {
 
     }}>
       <h1 css={{marginBottom: '4rem'}}>
-        {props.purpose === "expense"
-          ? "Add new expense category"
-          : "Add new income category"}
+        {headers.formHeader}
       </h1>
+
       <CategoryForm type={type}/>
 
       <h1 css={{marginBottom: '4rem'}}>
-        {props.purpose === "expense"
-          ? "Available expense categories"
-          : "Available income categories"}
+        {headers.tableHeader}
       </h1>
-
+      
       {isLoading ? (
         <div>'Loading data...'</div>
       ) : isSuccess ? (

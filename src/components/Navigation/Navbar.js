@@ -8,6 +8,7 @@ import ThemeToggle from '../UI/ThemeToggle/ThemeToggle'
 import { FormattedMessage } from 'react-intl';
 import {Link} from '../UI/Button/Button'
 import {useAuth} from '../../context/auth-context'
+import * as CATEGORY from '../../pages/Categories/category_types'
 
 const SideDrawer = styled.div(
   {
@@ -103,16 +104,16 @@ const Navbar = () => {
           </span>
           {dropdown ? (
             <React.Fragment>
-              <SubItemList link="/expense-categories">
+              <SubItemList link={CATEGORY.EXPENSE}>
                 <FormattedMessage id="menu.expenseCategories" />
               </SubItemList>
-              <SubItemList link="/income-categories">
+              <SubItemList link={CATEGORY.INCOME}>
                 <FormattedMessage id="menu.incomeCategories" />
               </SubItemList>
-              <SubItemList link="/payment-types">
+              <SubItemList link={CATEGORY.PAYMENT}>
                 <FormattedMessage id="menu.paymentTypes" />
               </SubItemList>
-              <SubItemList link="/collection-types">
+              <SubItemList link={CATEGORY.COLLECTION}>
                 <FormattedMessage id="menu.collectionTypes" />
               </SubItemList>
             </React.Fragment>

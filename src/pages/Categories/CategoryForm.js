@@ -11,11 +11,11 @@ import { useCreateMutation, useUpdateMutation, useRemoveMutation, useCategory } 
 
 const CategoryForm = ({type, id}) => {
     const intl = useIntl()
-    const {category} = useCategory(id, type) || {}
+    const {name} = useCategory(id, type) || {}
     const {state, inputChangeHandler, handleFormSubmit } = useForm({
         categoryForm: {
-            category : {
-                value: category ? category : '',
+            name : {
+                value: name ? name : '',
                 valid: false,
                 touched: false,
                 validators: [required, length({min: 3})]
@@ -30,14 +30,14 @@ const CategoryForm = ({type, id}) => {
     return (
       <div css={{marginBottom: '4rem'}}>
         <Input
-          id="category"
-          label="category"
+          id="name"
+          label="name"
           type="input"
           control="input"
           onChange={inputChangeHandler}
-          value={state.categoryForm.category.value}
-          valid={state.categoryForm.category.valid}
-          touched={state.categoryForm.category.touched}
+          value={state.categoryForm.name.value}
+          valid={state.categoryForm.name.valid}
+          touched={state.categoryForm.name.touched}
           placeholder={intl.formatMessage({ id: "category.category" })}
           validationMessage={<FormattedMessage id="validation.length3" />}
         />

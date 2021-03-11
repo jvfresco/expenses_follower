@@ -14,6 +14,7 @@
     "form.email": "Email",
     "form.password": "Password",
     "form.name": "Name",
+    
     "button.cancel": "Cancel",
     "button.accept": "Accept",
     "button.save": "Save",
@@ -31,7 +32,17 @@
     "movement.tax": "Tax",
     "account.name": "Name of account",
     "account.position": "Position of the account",
-    "category.category": "Category name",
+    "category.category": "Name",
+    "category.form.header.expense": "Add new expense category",
+    "category.table.header.expense": "List of availables expense categories",
+    "category.form.header.income": "Add new income category",
+    "category.table.header.income": "List of availables income categories",
+    "category.form.header.payment": "Add new payment type",
+    "category.table.header.payment": "List of availables payment types",
+    "category.form.header.collection": "Add new collection type",
+    "category.table.header.collection": "List of availables collection types",
+    "table.edit": "Edit",
+    "table.delete": "Delete",
     "theme.dark": "Dark theme",
     "theme.light": "Light theme"
 }

@@ -28,8 +28,8 @@ function updateFormState(input, value, prevState, formName){
         
 }
 
-//Function executed onSubmit
-//Checks for global form validity and sybmits data or touches the cells if validation failed
+//executed onSubmit
+//Checks for global form validity and submits data or touches the cells if validation failed
 function handleFormSubmit(e, state, onSubmit, inputChangeHandler, formName){
     e.preventDefault()
     if(state.formIsValid){
