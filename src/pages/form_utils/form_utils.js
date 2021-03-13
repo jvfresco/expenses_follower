@@ -1,28 +1,31 @@
 import React from 'react'
 
 //Validates the new input value and the whole form
-function updateFormState(input, value, prevState, formName){
+function updateFormState(input, value, prevState){
           let isValid = true;
-          if(prevState[formName][input].validators){
-            for (const validator of prevState[formName][input].validators) {
+          if(prevState[input].validators){
+            for (const validator of prevState[input].validators) {
               isValid = isValid && validator(value);
             }
           }
           const updatedForm = {
-            ...prevState[formName],
+            ...prevState,
             [input]: {
-              ...prevState[formName][input],
+              ...prevState[input],
               valid: isValid,
               value: value,
               touched: true
             }
           };
+          
           let formIsValid = true;
           for (const inputName in updatedForm) {
-            formIsValid = formIsValid && updatedForm[inputName].valid;
+            if(updatedForm[inputName].valid){
+              formIsValid = formIsValid && updatedForm[inputName].valid;
+            }
           }
           return {
-            [formName]: updatedForm,
+            ...updatedForm,
             formIsValid: formIsValid
           };
         
@@ -30,17 +33,19 @@ function updateFormState(input, value, prevState, formName){
 
 //executed onSubmit
 //Checks for global form validity and submits data or touches the cells if validation failed
-function handleFormSubmit(e, state, onSubmit, inputChangeHandler, formName){
-    e.preventDefault()
+function handleFormSubmit(state, onSubmit, inputChangeHandler, e){
+    e && e.preventDefault()
     if(state.formIsValid){
       let values = {}
-      Object.keys(state[formName]).forEach(key => {
-        values[key] = state[formName][key].value
+      Object.keys(state).forEach(key => {
+        if(key !== 'formIsValid'){
+          values[key] = state[key].value
+        }
       })
       onSubmit(values)
     } else {
-        Object.keys(state[formName]).forEach((key) => {
-            inputChangeHandler(key, state[formName][key].value)
+        Object.keys(state).forEach((key) => {
+            inputChangeHandler(key, state[key].value)  
         });
     }
   }
@@ -51,11 +56,10 @@ function handleFormSubmit(e, state, onSubmit, inputChangeHandler, formName){
 //Returns the updated state, handleFormSubmit and inputChangeHandler
 export const useForm = (initialState) => {
   const [state, setState] = React.useState({...initialState, formIsValid:false})
-
   //Each keystroke is updated here
   const inputChangeHandler = (input, value) => {
     setState(prevState => {
-      return updateFormState(input, value, prevState, Object.keys(state)[0])
+      return updateFormState(input, value, prevState)
     });
   };
 

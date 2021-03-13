@@ -4,39 +4,44 @@ import {Button} from '../../components/UI/Button/Button'
 import {required, length} from '../../utils/validators'
 import {FormattedMessage, useIntl} from 'react-intl'
 import {useForm} from '../form_utils/form_utils'
+import {useCreateMutation, useRemoveMutation, useUpdateMutation, useAccount} from './hooks'
+import {FormControls, SaveButton, EditButton, DeleteButton} from '../../components/UI/FormControls/FormControls'
 
-const AccountForm = (props) => {
+const AccountForm = ({id}) => {
     const intl = useIntl()
+    const {name, position} = useAccount(id) || {}
     const {state, inputChangeHandler, handleFormSubmit} = useForm({
-        accountForm:{
+        
             name: {
-                value: '',
-                valid: false,
+                value: name ? name : '',
+                valid: id ? true : false,
                 touched: false,
                 validators: [required, length({ min: 5 })]
             },
             position: {
-                value: '',
-                valid: false,
+                value: position ? position : '',
+                valid: id ? true : false,
                 touched: false,
                 validators: [required]
             }
-        },
-        formIsValid: false
+        
     })
 
+    const {mutate: create, isLoading: isCreating} = useCreateMutation()
+    const {mutate: remove, isLoading: isRemoving} = useRemoveMutation()
+    const {mutate: update, isLoading: isUpdating} = useUpdateMutation(id)
    
     return (
-        <form onSubmit={(e) => handleFormSubmit(e, state, props.onSubmit, inputChangeHandler, Object.keys(state)[0])}>
+        <FormControls>
             <Input
                 id="name"
                 label="name"
                 type="input"
                 control="input"
                 onChange={inputChangeHandler}
-                value={state.accountForm.name.value}
-                valid={state.accountForm.name.valid}
-                touched={state.accountForm.name.touched}
+                value={state.name.value}
+                valid={state.name.valid}
+                touched={state.name.touched}
                 placeholder={intl.formatMessage({id:'account.name'})}
                 validationMessage={<FormattedMessage id='validation.length5' />}
               />
@@ -46,16 +51,25 @@ const AccountForm = (props) => {
                 type="input"
                 control="currency"
                 onChange={inputChangeHandler}
-                value={state.accountForm.position.value}
-                valid={state.accountForm.position.valid}
-                touched={state.accountForm.position.touched}
+                value={state.position.value}
+                valid={state.position.valid}
+                touched={state.position.touched}
                 placeholder={intl.formatMessage({id:'account.position'})}
                 validationMessage={<FormattedMessage id='validation.required' />}
               />
-              <Button design="primary" type="submit" loading={props.loading}>
-                <FormattedMessage id='button.save' />
-              </Button>
-        </form>
+              {
+                  id ?
+                  <React.Fragment>
+                  <EditButton loading={isUpdating} onClick={() => handleFormSubmit(state, update, inputChangeHandler)}/>
+                  <DeleteButton loading={isRemoving} onClick={() => remove(id)}/>
+                  </React.Fragment>
+                  :
+                  <SaveButton loading={isCreating} onClick={() => handleFormSubmit(state, create, inputChangeHandler)}/>
+
+              }
+              
+
+        </FormControls>
     )
 
 }

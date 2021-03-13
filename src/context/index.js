@@ -34,9 +34,9 @@ const AppProviders = ({ children }) => {
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <AuthProvider>
-            <IntlProvider locale="es" messages={message}>
+            <IntlProvider locale="en" messages={message}>
               {children}
-              <ReactQueryDevtools initialIsOpen />
+              {/* <ReactQueryDevtools initialIsOpen /> */}
             </IntlProvider>
           </AuthProvider>
         </BrowserRouter>

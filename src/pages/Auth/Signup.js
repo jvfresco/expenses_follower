@@ -10,7 +10,7 @@ import {useForm} from '../form_utils/form_utils'
 const Signup = ({onSubmit, isError, isLoading, isSuccess}) => {
   const intl = useIntl()
   const {state, inputChangeHandler, handleFormSubmit} = useForm({
-    signupForm: {
+    
       email: {
         value: '',
         valid: false,
@@ -29,14 +29,14 @@ const Signup = ({onSubmit, isError, isLoading, isSuccess}) => {
         touched: false,
         validators: [required]
       },
-    }
+    
   });
 
 
 
     return (
       <AuthForm>
-        <form onSubmit={(e) => handleFormSubmit(e, state, onSubmit, inputChangeHandler, Object.keys(state)[0])} 
+        <form onSubmit={(e) => handleFormSubmit(state, onSubmit, inputChangeHandler,e)} 
               css={{width: "65%", alignSelf: "center"}}>
           <Input
             id="email"
@@ -44,9 +44,9 @@ const Signup = ({onSubmit, isError, isLoading, isSuccess}) => {
             type="email"
             control="input"
             onChange={inputChangeHandler}
-            value={state.signupForm['email'].value}
-            valid={state.signupForm['email'].valid}
-            touched={state.signupForm['email'].touched}
+            value={state['email'].value}
+            valid={state['email'].valid}
+            touched={state['email'].touched}
             placeholder={intl.formatMessage({id:'form.email'})}
             validationMessage={<FormattedMessage id='validation.email' />}
           />
@@ -56,9 +56,9 @@ const Signup = ({onSubmit, isError, isLoading, isSuccess}) => {
             type="text"
             control="input"
             onChange={inputChangeHandler}
-            value={state.signupForm['name'].value}
-            valid={state.signupForm['name'].valid}
-            touched={state.signupForm['name'].touched}
+            value={state['name'].value}
+            valid={state['name'].valid}
+            touched={state['name'].touched}
             placeholder={intl.formatMessage({id:'form.name'})}
             validationMessage={<FormattedMessage id='validation.required' />}
           />
@@ -68,9 +68,9 @@ const Signup = ({onSubmit, isError, isLoading, isSuccess}) => {
             type="password"
             control="input"
             onChange={inputChangeHandler}
-            value={state.signupForm['password'].value}
-            valid={state.signupForm['password'].valid}
-            touched={state.signupForm['password'].touched}
+            value={state['password'].value}
+            valid={state['password'].valid}
+            touched={state['password'].touched}
             placeholder={intl.formatMessage({id:'form.password'})}
             validationMessage={<FormattedMessage id='validation.password' />}
           />

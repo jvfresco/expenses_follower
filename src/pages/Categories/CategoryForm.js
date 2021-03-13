@@ -2,7 +2,7 @@
 import { css, jsx } from '@emotion/react'
 import React from 'react'
 import Input from '../../components/UI/Input/Input'
-import {Button} from '../../components/UI/Button/Button'
+import {FormControls, SaveButton, EditButton, DeleteButton} from '../../components/UI/FormControls/FormControls'
 import {required, length} from '../../utils/validators'
 import {FormattedMessage, useIntl} from 'react-intl'
 import {useForm} from '../form_utils/form_utils'
@@ -13,14 +13,14 @@ const CategoryForm = ({type, id}) => {
     const intl = useIntl()
     const {name} = useCategory(id, type) || {}
     const {state, inputChangeHandler, handleFormSubmit } = useForm({
-        categoryForm: {
+       
             name : {
                 value: name ? name : '',
                 valid: false,
                 touched: false,
                 validators: [required, length({min: 3})]
             }
-        }
+        
     })
 
     const {mutate: create, isLoading: isCreating} = useCreateMutation(type)
@@ -28,69 +28,56 @@ const CategoryForm = ({type, id}) => {
     const {mutate: remove, isLoading: isRemoving} = useRemoveMutation(type)
 
     return (
-      <div css={{marginBottom: '4rem'}}>
+      <FormControls>
         <Input
           id="name"
           label="name"
           type="input"
           control="input"
           onChange={inputChangeHandler}
-          value={state.categoryForm.name.value}
-          valid={state.categoryForm.name.valid}
-          touched={state.categoryForm.name.touched}
+          value={state.name.value}
+          valid={state.name.valid}
+          touched={state.name.touched}
           placeholder={intl.formatMessage({ id: "category.category" })}
           validationMessage={<FormattedMessage id="validation.length3" />}
         />
 
         {id ? (
           <React.Fragment>
-            <Button
-              design="secondary"
-              type="nada"
+            <EditButton
               loading={isUpdating}
-              style={{ width: "50%" }}
-              onClick={(e) =>
+              onClick={() =>
                 handleFormSubmit(
-                  e,
                   state,
                   update,
                   inputChangeHandler,
-                  Object.keys(state)[0]
+                  
                 )
               }
-            >
-              <FormattedMessage id="button.edit" />
-            </Button>
-            <Button
-              design="danger"
-              type="nada"
+            />
+       
+            <DeleteButton
               loading={isRemoving}
-              style={{ width: "50%" }}
               onClick={() => remove(id)}
-            >
-              <FormattedMessage id="button.delete" />
-            </Button>
+            />
+            
+    
           </React.Fragment>
         ) : 
-        <Button
-          design="primary"
-          type="submit"
+        <SaveButton
           loading={isCreating}
-          style={{ width: "100%" }}
-          onClick={(e) =>
+          onClick={() =>
             handleFormSubmit(
-              e,
               state,
               create,
               inputChangeHandler,
-              Object.keys(state)[0]
+             
             )
           }
-        >
-          <FormattedMessage id="button.save" />
-        </Button>
+        />
+          
         }
-      </div>
+      </FormControls>
     );
 
 }

@@ -1,14 +1,15 @@
 const AUTH_URL = 'http://localhost:8080/auth/'
 
 async function getUser() {
+  let user = null
   const token = localStorage.getItem("token");
   const expiryDate = localStorage.getItem("expiryDate");
   if (!token || !expiryDate) {
-    return;
+    return user;
   }
   if (new Date(expiryDate) <= new Date()) {
     logout();
-    return;
+    return user;
   }
   const userId = localStorage.getItem("userId");
   const remainingMilliseconds =

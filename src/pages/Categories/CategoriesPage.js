@@ -11,7 +11,7 @@ const CategoriesPage = ({type}) => {
   
   const { data: categories, isError, isLoading, isSuccess, error } = useCategories(type)
   const {mutate: remove} = useRemoveMutation(type)
-  console.log(categories)
+  
   const columns = useMemo(
     () => [
       {

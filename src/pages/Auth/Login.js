@@ -10,7 +10,7 @@ import {useForm} from '../form_utils/form_utils'
 const Login = ({onSubmit, isLoading, isError, isSuccess}) => {
     const intl = useIntl()
     const {state, inputChangeHandler, handleFormSubmit} = useForm({
-        loginForm: {
+        
           email: {
             value: '',
             valid: false,
@@ -23,7 +23,7 @@ const Login = ({onSubmit, isLoading, isError, isSuccess}) => {
             touched: false,
             validators: [required, length({ min: 5 })]
           },
-        }
+      
     });
 
 
@@ -32,7 +32,7 @@ const Login = ({onSubmit, isLoading, isError, isSuccess}) => {
           <AuthForm>
             <form
               css={{width: "65%", alignSelf: "center",}}
-              onSubmit={(e) => handleFormSubmit(e, state, onSubmit, inputChangeHandler, Object.keys(state)[0])}
+              onSubmit={(e) => handleFormSubmit(state, onSubmit, inputChangeHandler, e)}
             >
               <Input
                 id="email"
@@ -40,9 +40,9 @@ const Login = ({onSubmit, isLoading, isError, isSuccess}) => {
                 type="email"
                 control="input"
                 onChange={inputChangeHandler}
-                value={state.loginForm['email'].value}
-                valid={state.loginForm['email'].valid}
-                touched={state.loginForm['email'].touched}
+                value={state['email'].value}
+                valid={state['email'].valid}
+                touched={state['email'].touched}
                 placeholder={intl.formatMessage({id:'form.email'})}
                 validationMessage={<FormattedMessage id='validation.email' />}
               />
@@ -52,9 +52,9 @@ const Login = ({onSubmit, isLoading, isError, isSuccess}) => {
                 type="password"
                 control="input"
                 onChange={inputChangeHandler}
-                value={state.loginForm['password'].value}
-                valid={state.loginForm['password'].valid}
-                touched={state.loginForm['password'].touched}
+                value={state['password'].value}
+                valid={state['password'].valid}
+                touched={state['password'].touched}
                 placeholder={intl.formatMessage({id:'form.password'})}
                 validationMessage={<FormattedMessage id='validation.password' />}
               />

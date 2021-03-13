@@ -10,7 +10,7 @@ const ExpenseForm = (props) => {
 //TODO: AUTOCKECK TAX AND TYPE IF THE USER HAS IT CONFIGURED IN OPTIONS
 
     const {state, inputChangeHandler, handleFormSubmit } = useForm({
-        expenseForm: {
+        
           description: {
             value: '',
             valid: false,
@@ -51,22 +51,22 @@ const ExpenseForm = (props) => {
             touched: false,
             validators: [required]
           },
-        }
+        
       });
 
 
 
     return(
-        <form onSubmit={(e) => handleFormSubmit(e, state, props.onSubmit, inputChangeHandler, Object.keys(state)[0])}>
+        <form onSubmit={(e) => handleFormSubmit(e, state, props.onSubmit, inputChangeHandler)}>
             <Input
                 id="description"
                 label="description"
                 type="input"
                 control="input"
                 onChange={inputChangeHandler}
-                value={state.expenseForm.description.value}
-                valid={state.expenseForm.description.valid}
-                touched={state.expenseForm.description.touched}
+                value={state.description.value}
+                valid={state.description.valid}
+                touched={state.description.touched}
                 placeholder={intl.formatMessage({id:'movement.description'})}
                 validationMessage={<FormattedMessage id='validation.length5' />}
               />
@@ -76,9 +76,9 @@ const ExpenseForm = (props) => {
                 type="input"
                 control="currency"
                 onChange={inputChangeHandler}
-                value={state.expenseForm.amount.value}
-                valid={state.expenseForm.amount.valid}
-                touched={state.expenseForm.amount.touched}
+                value={state.amount.value}
+                valid={state.amount.valid}
+                touched={state.amount.touched}
                 placeholder={intl.formatMessage({id:'movement.amount'})}
                 validationMessage={<FormattedMessage id='validation.required' />}
               />
@@ -88,9 +88,9 @@ const ExpenseForm = (props) => {
                 type="date"
                 control="input"
                 onChange={inputChangeHandler}
-                value={state.expenseForm.date.value}
-                valid={state.expenseForm.date.valid}
-                touched={state.expenseForm.date.touched}
+                value={state.date.value}
+                valid={state.date.valid}
+                touched={state.date.touched}
                 validationMessage={<FormattedMessage id='validation.required' />}
                 
               />
@@ -102,8 +102,8 @@ const ExpenseForm = (props) => {
                 control="select"
                 label="category"
                 onChange={inputChangeHandler}
-                valid={state.expenseForm.category.valid}
-                touched={state.expenseForm.category.touched}
+                valid={state.category.valid}
+                touched={state.category.touched}
                 options={[{id: "1", name:"cat1"}, {id: "2", name:"cat2"}]}
                 validationMessage={<FormattedMessage id='validation.required' />}
                 data-testid = "category-input"
@@ -115,8 +115,8 @@ const ExpenseForm = (props) => {
                 control="select"
                 label="account"
                 onChange={inputChangeHandler}
-                valid={state.expenseForm.account.valid}
-                touched={state.expenseForm.account.touched}
+                valid={state.account.valid}
+                touched={state.account.touched}
                 options={[{id: "1", name:"account1"}]}
                 validationMessage={<FormattedMessage id='validation.required' />}
                 data-testid = "account-input"
@@ -127,9 +127,9 @@ const ExpenseForm = (props) => {
                 type="input"
                 control="input"
                 onChange={inputChangeHandler}
-                value={state.expenseForm.tax.value}
-                valid={state.expenseForm.tax.valid}
-                touched={state.expenseForm.tax.touched}
+                value={state.tax.value}
+                valid={state.tax.valid}
+                touched={state.tax.touched}
                 placeholder={intl.formatMessage({id:'movement.tax'})}
               />
 
@@ -139,8 +139,8 @@ const ExpenseForm = (props) => {
                 control="select"
                 label="type"
                 onChange={inputChangeHandler}
-                valid={state.expenseForm.type.valid}
-                touched={state.expenseForm.type.touched}
+                valid={state.type.valid}
+                touched={state.type.touched}
                 options={[{id: "1", name:"type1"}, {id: "2", name:"type2"}]}
                 data-testid = "type-input"
               />
