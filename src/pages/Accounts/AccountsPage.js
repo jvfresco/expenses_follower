@@ -8,7 +8,7 @@ import {PageWrapper, TableHeader, PageHeader, ConditionalTable} from '../../comp
 import {useHeaders} from '../page_utils/table_hooks'
 
 const Accounts = () => {
-    const {data: accounts, error, run, isLoading, isError, isSuccess} = useTableData()
+    const {data: accounts, error, isLoading, isError, isSuccess} = useTableData()
     const {mutate: remove} = useRemoveMutation()
     const tableHeaders = useHeaders(remove)
     const columns = useMemo(
@@ -42,6 +42,8 @@ const Accounts = () => {
           renderRowSubComponent={rowSubComponent}
           isLoading={isLoading}
           isSuccess={isSuccess}
+          isError={isError}
+          error={error}
         />
       </PageWrapper>
     )

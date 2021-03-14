@@ -10,6 +10,8 @@ import AccountsPage from './pages/Accounts/AccountsPage'
 import CategoriesPage from './pages/Categories/CategoriesPage'
 import {useAuth} from './context/auth-context'
 import * as ENDPOINTS from './routes/endpoints'
+import { ErrorBoundary } from 'react-error-boundary'
+import {ErrorComponent} from './components/Error/ErrorComponent'
 
 function App(props) {
   const {user} = useAuth()
@@ -18,14 +20,8 @@ function App(props) {
     document.body.dataset.theme = 'light'
   }, [])
 
-  return (
-    user 
-    ?
-    <div css={{display:'flex'}}>
-      <Navbar/>
-      <div css={{width: '100%', textAlign:'center', backgroundColor:'var(--colors-background)'}}>
-      <Switch>
-        
+  const AppRoutes = () => (
+    <Switch>
           <Route path={ENDPOINTS.GLOBAL} exact>
             <GlobalView {...props} />
           </Route>
@@ -52,6 +48,16 @@ function App(props) {
           </Route>
         
       </Switch>
+  )
+  return (
+    user 
+    ?
+    <div css={{display:'flex'}}>
+      <Navbar/>
+      <div css={{width: '100%', textAlign:'center', backgroundColor:'var(--colors-background)'}}>
+      <ErrorBoundary FallbackComponent={ErrorComponent}>
+        <AppRoutes/>
+      </ErrorBoundary>
       </div>
     </div>
     :

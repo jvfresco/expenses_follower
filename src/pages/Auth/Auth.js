@@ -10,7 +10,7 @@ import {useAuth} from '../../context/auth-context'
 
 
 const Auth = () => {
-    const {run, isLoading, isError, isSuccess} = useAsync()
+    const {run, isLoading, isError, error} = useAsync()
     const {login, signup} = useAuth()
     const handleLogin = (authData) => {
       run(login(authData))
@@ -35,7 +35,7 @@ const Auth = () => {
                       {...props}
                       isLoading={isLoading}
                       isError={isError}
-                      isSuccess={isSuccess}
+                      error={error}
                       onSubmit={handleSignup}
                     />
                   )}
@@ -48,7 +48,7 @@ const Auth = () => {
                       {...props}
                       isLoading={isLoading}
                       isError={isError}
-                      isSuccess={isSuccess}
+                      error={error}
                       onSubmit={handleLogin}
                     />
                   )}

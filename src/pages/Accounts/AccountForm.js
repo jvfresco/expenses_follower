@@ -6,6 +6,7 @@ import {useForm} from '../page_utils/form_utils'
 import {useCreateMutation, useRemoveMutation, useUpdateMutation, useSingleItemData} from '../page_utils/data_hooks'
 import {FormControls, SaveButton, EditButton, DeleteButton} from '../../components/UI/FormControls/FormControls'
 
+
 const AccountForm = ({id}) => {
     const intl = useIntl()
     const {name, position} = useSingleItemData(id) || {}
@@ -27,6 +28,7 @@ const AccountForm = ({id}) => {
     const {mutate: create, isLoading: isCreating} = useCreateMutation()
     const {mutate: remove, isLoading: isRemoving} = useRemoveMutation()
     const {mutate: update, isLoading: isUpdating} = useUpdateMutation(id)
+   
    
     return (
         <FormControls>
@@ -54,16 +56,18 @@ const AccountForm = ({id}) => {
                 placeholder={intl.formatMessage({id:'account.position'})}
                 validationMessage={<FormattedMessage id='validation.required' />}
               />
-              {
+
+            
+              { 
                   id ?
                   <React.Fragment>
-                  <EditButton loading={isUpdating} onClick={() => handleFormSubmit(state, update, inputChangeHandler)}/>
-                  <DeleteButton loading={isRemoving} onClick={() => remove(id)}/>
+                    <EditButton loading={isUpdating} onClick={() => handleFormSubmit(state, update, inputChangeHandler)}/>
+                    <DeleteButton loading={isRemoving} onClick={() => remove(id)}/>
                   </React.Fragment>
                   :
                   <SaveButton loading={isCreating} onClick={() => handleFormSubmit(state, create, inputChangeHandler)}/>
-
               }
+              
               
 
         </FormControls>

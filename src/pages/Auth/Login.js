@@ -6,8 +6,9 @@ import Input from '../../components/UI/Input/Input'
 import {Button, Link} from '../../components/UI/Button/Button'
 import { FormattedMessage, useIntl } from 'react-intl';
 import {useForm} from '../page_utils/form_utils'
+import {InlineError} from '../../components/Error/ErrorComponent'
 
-const Login = ({onSubmit, isLoading, isError, isSuccess}) => {
+const Login = ({onSubmit, isLoading, isError, error}) => {
     const intl = useIntl()
     const {state, inputChangeHandler, handleFormSubmit} = useForm({
         
@@ -58,6 +59,9 @@ const Login = ({onSubmit, isLoading, isError, isSuccess}) => {
                 placeholder={intl.formatMessage({id:'form.password'})}
                 validationMessage={<FormattedMessage id='validation.password' />}
               />
+
+              {isError ? <InlineError error={error}/> : null}
+
               <Button design="primary" type="submit" loading={isLoading} css={{width:'100%'}}>
                 <FormattedMessage id='menu.login' />
               </Button>

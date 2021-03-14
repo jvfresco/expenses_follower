@@ -12,6 +12,7 @@ const AppProviders = ({ children }) => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
+        useErrorBoundary: true,
         refetchOnWindowFocus: false,
       },
     },

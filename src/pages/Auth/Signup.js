@@ -6,8 +6,9 @@ import { required, length, email } from '../../utils/validators';
 import AuthForm from './AuthForm';
 import { FormattedMessage, useIntl } from 'react-intl';
 import {useForm} from '../page_utils/form_utils'
+import {InlineError} from '../../components/Error/ErrorComponent'
 
-const Signup = ({onSubmit, isError, isLoading, isSuccess}) => {
+const Signup = ({onSubmit, isError, isLoading, error}) => {
   const intl = useIntl()
   const {state, inputChangeHandler, handleFormSubmit} = useForm({
     
@@ -74,6 +75,9 @@ const Signup = ({onSubmit, isError, isLoading, isSuccess}) => {
             placeholder={intl.formatMessage({id:'form.password'})}
             validationMessage={<FormattedMessage id='validation.password' />}
           />
+
+          {isError ? <InlineError error={error}/> : null}
+          
           <Button design="primary" type="submit" loading={isLoading} css={{width:'100%'}}>
             <FormattedMessage id='menu.signup'/> 
           </Button>

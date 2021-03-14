@@ -2,6 +2,7 @@
 import { css, jsx } from '@emotion/react'
 import {FormattedMessage} from 'react-intl'
 import Table from './Table'
+import {InlineError} from '../Error/ErrorComponent'
 
 const PageHeader = ({id}) => (
     <h1 css={{marginBottom: '4rem'}}>
@@ -15,17 +16,17 @@ const TableHeader = ({id}) => (
     </h1>
 )
 
-const ConditionalTable = ({isLoading, isSuccess, columns, data, rowSubComponent, }) => (
-  isLoading ? (
-    <div>'Loading data...'</div>
-  ) : isSuccess ? (
-    <Table
-      columns={columns}
-      data={data}
-      renderRowSubComponent={rowSubComponent}
-    />
-  ) : null
-)
+const ConditionalTable = ({isLoading, isSuccess, isError, error, columns, data, renderRowSubComponent, }) => {
+  if(isError){
+    return <InlineError error={error} />
+  }
+  if(isLoading){
+    return <div>'Loading data...'</div>
+  }
+  if(isSuccess){
+    return <Table columns={columns} data={data} renderRowSubComponent={renderRowSubComponent}/>
+  }
+}
 
 const PageWrapper = ({children}) => (
     <div css={{
@@ -35,12 +36,8 @@ const PageWrapper = ({children}) => (
         backgroundColor: 'var(--colors-primary)',
         color: 'var(--colors-menu-text)',
         borderRadius: '5px',
-  
-      }}>
-        
-      {children}
-        
-        
+    }}>
+        {children}
     </div>
 )
 
