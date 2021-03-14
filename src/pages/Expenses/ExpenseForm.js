@@ -2,7 +2,7 @@ import Input from '../../components/UI/Input/Input'
 import {Button} from '../../components/UI/Button/Button'
 import {required, length} from '../../utils/validators'
 import {FormattedMessage, useIntl} from 'react-intl'
-import {useForm} from '../form_utils/form_utils'
+import {useForm} from '../page_utils/form_utils'
 
 const ExpenseForm = (props) => {
     const intl = useIntl()

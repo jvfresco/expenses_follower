@@ -5,27 +5,25 @@ import Input from '../../components/UI/Input/Input'
 import {FormControls, SaveButton, EditButton, DeleteButton} from '../../components/UI/FormControls/FormControls'
 import {required, length} from '../../utils/validators'
 import {FormattedMessage, useIntl} from 'react-intl'
-import {useForm} from '../form_utils/form_utils'
-import { useCreateMutation, useUpdateMutation, useRemoveMutation, useCategory } from './hooks'
+import {useForm} from '../page_utils/form_utils'
+import { useCreateMutation, useUpdateMutation, useRemoveMutation, useSingleItemData } from '../page_utils/data_hooks'
 
 
-const CategoryForm = ({type, id}) => {
+const CategoryForm = ({id}) => {
     const intl = useIntl()
-    const {name} = useCategory(id, type) || {}
+    const {name} = useSingleItemData(id) || {}
     const {state, inputChangeHandler, handleFormSubmit } = useForm({
-       
             name : {
                 value: name ? name : '',
                 valid: false,
                 touched: false,
                 validators: [required, length({min: 3})]
             }
-        
     })
 
-    const {mutate: create, isLoading: isCreating} = useCreateMutation(type)
-    const {mutate: update, isLoading: isUpdating} = useUpdateMutation(type, id)
-    const {mutate: remove, isLoading: isRemoving} = useRemoveMutation(type)
+    const {mutate: create, isLoading: isCreating} = useCreateMutation()
+    const {mutate: update, isLoading: isUpdating} = useUpdateMutation(id)
+    const {mutate: remove, isLoading: isRemoving} = useRemoveMutation()
 
     return (
       <FormControls>
@@ -51,7 +49,6 @@ const CategoryForm = ({type, id}) => {
                   state,
                   update,
                   inputChangeHandler,
-                  
                 )
               }
             />
@@ -71,7 +68,6 @@ const CategoryForm = ({type, id}) => {
               state,
               create,
               inputChangeHandler,
-             
             )
           }
         />

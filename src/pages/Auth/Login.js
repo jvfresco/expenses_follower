@@ -5,7 +5,7 @@ import AuthForm from './AuthForm'
 import Input from '../../components/UI/Input/Input'
 import {Button, Link} from '../../components/UI/Button/Button'
 import { FormattedMessage, useIntl } from 'react-intl';
-import {useForm} from '../form_utils/form_utils'
+import {useForm} from '../page_utils/form_utils'
 
 const Login = ({onSubmit, isLoading, isError, isSuccess}) => {
     const intl = useIntl()

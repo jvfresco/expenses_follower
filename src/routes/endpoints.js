@@ -1,0 +1,8 @@
+export const GLOBAL = '/global'
+export const EXPENSES = '/expenses'
+export const INCOMES = '/incomes'
+export const ACCOUNTS = '/accounts/data'
+export const EXPENSE = '/categories/expense-category'
+export const INCOME = '/categories/income-category'
+export const PAYMENT = '/categories/payment-type'
+export const COLLECTION = '/categories/collection-type'

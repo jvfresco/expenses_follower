@@ -5,7 +5,7 @@ import {Button, Link} from '../../components/UI/Button/Button';
 import { required, length, email } from '../../utils/validators';
 import AuthForm from './AuthForm';
 import { FormattedMessage, useIntl } from 'react-intl';
-import {useForm} from '../form_utils/form_utils'
+import {useForm} from '../page_utils/form_utils'
 
 const Signup = ({onSubmit, isError, isLoading, isSuccess}) => {
   const intl = useIntl()

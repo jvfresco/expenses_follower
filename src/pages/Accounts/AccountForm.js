@@ -1,17 +1,15 @@
-import React, {useState} from 'react'
+import React from 'react'
 import Input from '../../components/UI/Input/Input'
-import {Button} from '../../components/UI/Button/Button'
 import {required, length} from '../../utils/validators'
 import {FormattedMessage, useIntl} from 'react-intl'
-import {useForm} from '../form_utils/form_utils'
-import {useCreateMutation, useRemoveMutation, useUpdateMutation, useAccount} from './hooks'
+import {useForm} from '../page_utils/form_utils'
+import {useCreateMutation, useRemoveMutation, useUpdateMutation, useSingleItemData} from '../page_utils/data_hooks'
 import {FormControls, SaveButton, EditButton, DeleteButton} from '../../components/UI/FormControls/FormControls'
 
 const AccountForm = ({id}) => {
     const intl = useIntl()
-    const {name, position} = useAccount(id) || {}
+    const {name, position} = useSingleItemData(id) || {}
     const {state, inputChangeHandler, handleFormSubmit} = useForm({
-        
             name: {
                 value: name ? name : '',
                 valid: id ? true : false,
@@ -24,7 +22,6 @@ const AccountForm = ({id}) => {
                 touched: false,
                 validators: [required]
             }
-        
     })
 
     const {mutate: create, isLoading: isCreating} = useCreateMutation()

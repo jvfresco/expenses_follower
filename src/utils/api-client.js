@@ -16,7 +16,7 @@ function client(
     ...customConfig,
   }
 
-  return window.fetch(`http://localhost:8080/${endpoint}`, config).then(async response => {
+  return window.fetch(`http://localhost:8080${endpoint}`, config).then(async response => {
     if (response.status === 401) {
       await auth.logout()
       // refresh the page for them

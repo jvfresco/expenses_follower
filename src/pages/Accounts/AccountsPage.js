@@ -2,60 +2,28 @@
 import { css, jsx } from '@emotion/react'
 import AccountForm from './AccountForm'
 import React, {useMemo} from 'react'
-import {useAuth} from '../../context/auth-context'
-import {useAccounts, useRemoveMutation} from './hooks'
+import {useTableData, useRemoveMutation} from '../page_utils/data_hooks'
 import {FormattedMessage} from 'react-intl'
 import Table from '../Categories/Table'
+import {useHeaders} from '../page_utils/table_hooks'
 
 const Accounts = () => {
-    const {user} = useAuth()
-    const {data: accounts, error, run, isLoading, isError, isSuccess} = useAccounts()
+    const {data: accounts, error, run, isLoading, isError, isSuccess} = useTableData()
     const {mutate: remove} = useRemoveMutation()
-   
+    const tableHeaders = useHeaders(remove)
     const columns = useMemo(
       () => [
         {
-          Header: "Account name", //Column name
+          Header: <FormattedMessage id='account.table.header.name' />, //Column name
           accessor: "name", // name of the key in data
         },
         {
-          Header: 'Position amount',
+          Header: <FormattedMessage id='account.table.header.balance' />,
           accessor: "position"
         },
-        {
-          // expander cell
-          Header: <FormattedMessage id="table.edit" />, // No header
-          id: "expander", 
-          Cell: ({ row, rows }) => (
-            <span
-              {...row.getToggleRowExpandedProps({
-                onClick: () => { //allows only one expanded row at a time
-                  const expandedRow = rows.find(r => r.isExpanded)
-                  if(expandedRow){
-                    if(expandedRow.id !== row.id){
-                      expandedRow.toggleRowExpanded(false)
-                    }
-                  }
-                  row.toggleRowExpanded()
-                },
-              })}
-            >
-              {row.isExpanded ? "-" : "+"}
-            </span>
-          ),
-          SubCell: () => null, 
-        },
-        {
-          Header: <FormattedMessage id="table.delete" />,
-          id: "delete",
-          Cell: ({row}) => (
-            <span onClick={() => remove(row.original._id)}>
-              X
-            </span>
-          )
-        }
+        ...tableHeaders
       ],
-      [remove]
+      [tableHeaders]
     );
 
     const rowSubComponent = React.useCallback(

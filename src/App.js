@@ -9,7 +9,7 @@ import ExpensesPage from './pages/Expenses/ExpensesPage'
 import AccountsPage from './pages/Accounts/AccountsPage'
 import CategoriesPage from './pages/Categories/CategoriesPage'
 import {useAuth} from './context/auth-context'
-import * as CATEGORY from './pages/Categories/category_types'
+import * as ENDPOINTS from './routes/endpoints'
 
 function App(props) {
   const {user} = useAuth()
@@ -26,26 +26,29 @@ function App(props) {
       <div css={{width: '100%', textAlign:'center', backgroundColor:'var(--colors-background)'}}>
       <Switch>
         
-          <Route path="/global" exact>
+          <Route path={ENDPOINTS.GLOBAL} exact>
             <GlobalView {...props} />
           </Route>
-          <Route path="/expenses" exact>
+          <Route path={ENDPOINTS.EXPENSES} exact>
             <ExpensesPage {...props}/>
           </Route>
-          <Route path="/accounts" exact>
+          <Route path={ENDPOINTS.INCOMES} exact>
+            {/* TODO INCOMES PAGE */}
+          </Route>
+          <Route path={ENDPOINTS.ACCOUNTS} exact>
             <AccountsPage {...props}/>
           </Route>
-          <Route path={CATEGORY.EXPENSE} exact>
-            <CategoriesPage {...props} type={CATEGORY.EXPENSE}/>
+          <Route path={ENDPOINTS.EXPENSE} exact>
+            <CategoriesPage {...props} />
           </Route>
-          <Route path={CATEGORY.INCOME} exact>
-            <CategoriesPage {...props} type={CATEGORY.INCOME}/>
+          <Route path={ENDPOINTS.INCOME} exact>
+            <CategoriesPage {...props} />
           </Route>
-          <Route path={CATEGORY.PAYMENT} exact>
-            <CategoriesPage {...props} type={CATEGORY.PAYMENT} />
+          <Route path={ENDPOINTS.PAYMENT} exact>
+            <CategoriesPage {...props} />
           </Route>
-          <Route path={CATEGORY.COLLECTION} exact>
-            <CategoriesPage {...props} type={CATEGORY.COLLECTION}/>
+          <Route path={ENDPOINTS.COLLECTION} exact>
+            <CategoriesPage {...props} />
           </Route>
         
       </Switch>

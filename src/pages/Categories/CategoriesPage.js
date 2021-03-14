@@ -3,84 +3,56 @@ import { css, jsx } from '@emotion/react'
 import React, {useMemo} from 'react'
 import CategoryForm from './CategoryForm'
 import Table from './Table'
-import {useCategories, useRemoveMutation} from './hooks'
-import * as CATEGORY from './category_types'
+import {useTableData, useRemoveMutation} from '../page_utils/data_hooks'
+import * as ENDPOINTS from '../../routes/endpoints'
 import {FormattedMessage} from 'react-intl'
+import { useRouteMatch } from 'react-router-dom'
+import {useHeaders} from '../page_utils/table_hooks'
 
-const CategoriesPage = ({type}) => {
+const CategoriesPage = () => {
   
-  const { data: categories, isError, isLoading, isSuccess, error } = useCategories(type)
-  const {mutate: remove} = useRemoveMutation(type)
-  
+  const { data: categories, isError, isLoading, isSuccess, error } = useTableData()
+  const {mutate: remove} = useRemoveMutation()
+  const {url} = useRouteMatch()
+  const tableHeaders = useHeaders(remove)
   const columns = useMemo(
     () => [
       {
         Header: <FormattedMessage id="category.category" />, //Column name
         accessor: "name", // name of the key in data
       },
-      {
-        // expander cell
-        Header: <FormattedMessage id="table.edit" />, // No header
-        id: "expander", 
-        Cell: ({ row, rows }) => (
-          <span
-            {...row.getToggleRowExpandedProps({
-              onClick: () => { //allows only one expanded row at a time
-                const expandedRow = rows.find(r => r.isExpanded)
-                if(expandedRow){
-                  if(expandedRow.id !== row.id){
-                    expandedRow.toggleRowExpanded(false)
-                  }
-                }
-                row.toggleRowExpanded()
-              },
-            })}
-          >
-            {row.isExpanded ? "-" : "+"}
-          </span>
-        ),
-        SubCell: () => null, 
-      },
-      {
-        Header: <FormattedMessage id="table.delete" />,
-        id: "delete",
-        Cell: ({row}) => (
-          <span onClick={() => remove(row.original._id)}>
-            X
-          </span>
-        )
-      }
+      ...tableHeaders
     ],
-    [remove]
+    [tableHeaders]
   );
 
   const rowSubComponent = React.useCallback(
-    (id) => <CategoryForm type={type} id={id}/>,
-    [type]
+    (id) => <CategoryForm id={id}/>,
+    []
   )
   
   let headers = {}
 
-  switch (type) {
-    case CATEGORY.EXPENSE:
+  switch (url) {
+    case ENDPOINTS.EXPENSE:
       headers = {
         formHeader: <FormattedMessage id="category.form.header.expense" />,
         tableHeader: <FormattedMessage id="category.table.header.expense" />,
       };
       break;
-    case CATEGORY.INCOME:
+    case ENDPOINTS.INCOME:
       headers = {
         formHeader: <FormattedMessage id="category.form.header.income" />,
         tableHeader: <FormattedMessage id="category.table.header.income" />,
       };
       break;
-    case CATEGORY.PAYMENT:
+    case ENDPOINTS.PAYMENT:
       headers = {
         formHeader: <FormattedMessage id="category.form.header.payment" />,
         tableHeader: <FormattedMessage id="category.table.header.payment" />,
       };
       break;
-    case CATEGORY.COLLECTION:
+    case ENDPOINTS.COLLECTION:
       headers = {
         formHeader: <FormattedMessage id="category.form.header.collection" />,
         tableHeader: <FormattedMessage id="category.table.header.collection" />,
@@ -105,7 +77,7 @@ const CategoriesPage = ({type}) => {
         {headers.formHeader}
       </h1>
 
-      <CategoryForm type={type}/>
+      <CategoryForm/>
 
       <h1 css={{marginBottom: '4rem'}}>
         {headers.tableHeader}

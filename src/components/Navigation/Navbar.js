@@ -8,7 +8,7 @@ import ThemeToggle from '../UI/ThemeToggle/ThemeToggle'
 import { FormattedMessage } from 'react-intl';
 import {Link} from '../UI/Button/Button'
 import {useAuth} from '../../context/auth-context'
-import * as CATEGORY from '../../pages/Categories/category_types'
+import * as ENDPOINTS from '../../routes/endpoints'
 
 const SideDrawer = styled.div(
   {
@@ -84,16 +84,16 @@ const Navbar = () => {
           active={active}
         />
         <MenuList active={active}>
-          <ItemList link="/global">
+          <ItemList link={ENDPOINTS.GLOBAL}>
             <FormattedMessage id="menu.position" />
           </ItemList>
-          <ItemList link="/expenses">
+          <ItemList link={ENDPOINTS.EXPENSES}>
             <FormattedMessage id="menu.expenses" />
           </ItemList>
-          <ItemList link="/incomes">
+          <ItemList link={ENDPOINTS.INCOMES}>
             <FormattedMessage id="menu.incomes" />
           </ItemList>
-          <ItemList link="/accounts">
+          <ItemList link={ENDPOINTS.ACCOUNTS}>
             <FormattedMessage id="menu.accounts" />
           </ItemList>
           <span
@@ -104,16 +104,16 @@ const Navbar = () => {
           </span>
           {dropdown ? (
             <React.Fragment>
-              <SubItemList link={CATEGORY.EXPENSE}>
+              <SubItemList link={ENDPOINTS.EXPENSE}>
                 <FormattedMessage id="menu.expenseCategories" />
               </SubItemList>
-              <SubItemList link={CATEGORY.INCOME}>
+              <SubItemList link={ENDPOINTS.INCOME}>
                 <FormattedMessage id="menu.incomeCategories" />
               </SubItemList>
-              <SubItemList link={CATEGORY.PAYMENT}>
+              <SubItemList link={ENDPOINTS.PAYMENT}>
                 <FormattedMessage id="menu.paymentTypes" />
               </SubItemList>
-              <SubItemList link={CATEGORY.COLLECTION}>
+              <SubItemList link={ENDPOINTS.COLLECTION}>
                 <FormattedMessage id="menu.collectionTypes" />
               </SubItemList>
             </React.Fragment>
