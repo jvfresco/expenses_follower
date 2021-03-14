@@ -34,6 +34,8 @@
     "account.position": "Balance of the account",
     "account.table.header.name": "Name",
     "account.table.header.balance": "Balance",
+    "account.form.header.account": "Add new account",
+    "account.table.header.account": "List of available accounts",
     "category.category": "Name",
     "category.form.header.expense": "Add new expense category",
     "category.table.header.expense": "List of availables expense categories",

@@ -4,7 +4,7 @@ import AccountForm from './AccountForm'
 import React, {useMemo} from 'react'
 import {useTableData, useRemoveMutation} from '../page_utils/data_hooks'
 import {FormattedMessage} from 'react-intl'
-import Table from '../Categories/Table'
+import {PageWrapper, TableHeader, PageHeader, ConditionalTable} from '../../components/Table/PageWrapper'
 import {useHeaders} from '../page_utils/table_hooks'
 
 const Accounts = () => {
@@ -31,34 +31,19 @@ const Accounts = () => {
       []
     )
     
-
-    return(
-      <div css={{
-        width: '40%', 
-        padding: '4rem 6rem',
-        margin: '3rem auto',
-        backgroundColor: 'var(--colors-primary)',
-        color: 'var(--colors-menu-text)',
-        borderRadius: '5px',
-  
-      }}>
-        <h1 css={{marginBottom: '4rem'}}>
-          Add new account
-        </h1>
-        <AccountForm />
-        <h1 css={{marginBottom: '4rem'}}>
-        Available accounts list
-        </h1>
-        {isLoading ? (
-          <div>'Loading data...'</div>
-        ) : isSuccess ? (
-          <Table
-            columns={columns}
-            data={accounts}
-            renderRowSubComponent={rowSubComponent}
-          />
-        ) : null}
-    </div>
+    return (
+      <PageWrapper>
+        <PageHeader id='account.form.header.account'/>
+          <AccountForm />
+        <TableHeader id='account.table.header.account' />
+        <ConditionalTable 
+          columns={columns}
+          data={accounts}
+          renderRowSubComponent={rowSubComponent}
+          isLoading={isLoading}
+          isSuccess={isSuccess}
+        />
+      </PageWrapper>
     )
 }
 
