@@ -59,9 +59,9 @@ const useRemoveMutation = () => {
               return old.filter(item => item._id !== id )
             })
             return () => queryClient.setQueryData(url, previous)
-          } 
+          },
+          ...defaultMutationOptions(url, queryClient) 
         },
-      {...defaultMutationOptions(url, queryClient)}
     );
   };
 
@@ -83,9 +83,10 @@ const useRemoveMutation = () => {
               })
             })
             return () => queryClient.setQueryData(url, previous)
-          }
+          },
+          ...defaultMutationOptions(url, queryClient)
         },
-        {...defaultMutationOptions(url, queryClient)}
+        
     )
   }
   
