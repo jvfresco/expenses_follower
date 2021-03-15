@@ -9,13 +9,11 @@ function useProvidersData(){
     return {queryClient, url, client}
 }
 
-function defaultMutationOptions(type, queryClient){
+function defaultMutationOptions(url, queryClient){
     return{
-        onSettled: () => queryClient.invalidateQueries(type),
+        onSettled: () => queryClient.invalidateQueries(url),
         onError: (err, variables, recover) =>
-          console.log('THERE IS AN ERRRROOOR')
-          // typeof recover === 'function' ? recover() : null
-        
+          typeof recover === 'function' ? recover() : null
     }
 }
 
@@ -61,40 +59,44 @@ const useRemoveMutation = () => {
               return old.filter(item => item._id !== id )
             })
             return () => queryClient.setQueryData(url, previous)
-          } 
+          },
+          ...defaultMutationOptions(url, queryClient) 
         },
-      {...defaultMutationOptions(url, queryClient)}
+        
     );
   };
 
-  const useUpdateMutation = (id) => {
+  const useUpdateMutation = () => {
     const {queryClient, url, client} = useProvidersData()
     return useMutation(
       (data) =>
-        client(url, {
-          data: { requestedId: id, ...data },
+       { 
+         return client(url, {
+          data: data,
           method: 'PUT'
-        }),
+        })},
         {
           onMutate: (data) => {
+            const {requestedId, ...updatedata} = data
             queryClient.cancelQueries(url)
             const previous = queryClient.getQueryData(url)
             queryClient.setQueryData(url, (old) => {
               return old.map(item => {
-                return item._id === id ? {...item, ...data} : item
+                return item._id === requestedId ? {...item, ...updatedata} : item
               })
             })
             return () => queryClient.setQueryData(url, previous)
-          }
+          },
+          ...defaultMutationOptions(url, queryClient)
         },
-        {...defaultMutationOptions(url, queryClient)}
+        
     )
   }
   
-  const useDataMutation = (id) => {
+  const useDataMutation = () => {
     const {mutate: create, isLoading: isCreating, isError: isCreatingError, error: error1} = useCreateMutation()
     const {mutate: remove, isLoading: isRemoving, isError: isRemovingError, error: error2} = useRemoveMutation()
-    const {mutate: update, isLoading: isUpdating, isError: isUpdatingError, error: error3} = useUpdateMutation(id)
+    const {mutate: update, isLoading: isUpdating, isError: isUpdatingError, error: error3} = useUpdateMutation()
     console.log('creating error: '+isCreatingError)
     console.log('removing error: '+isRemovingError)
     console.log('updating error: '+isUpdatingError)

@@ -8,7 +8,7 @@ import {FormControls, SaveButton, EditButton, DeleteButton} from '../../componen
 import { InlineError } from '../../components/Error/ErrorComponent'
 
 
-const AccountForm = ({id}) => {
+const AccountForm = ({id, update, remove, create, isCreating, isRemoving, isUpdating, error, isError}) => {
     const intl = useIntl()
     const {name, position} = useSingleItemData(id) || {}
     const {state, inputChangeHandler, handleFormSubmit} = useForm({
@@ -29,8 +29,8 @@ const AccountForm = ({id}) => {
     // const {mutate: create, isLoading: isCreating} = useCreateMutation()
     // const {mutate: remove, isLoading: isRemoving} = useRemoveMutation()
     // const {mutate: update, isLoading: isUpdating} = useUpdateMutation(id)
-    const {update, remove, create, isCreating, isRemoving, isUpdating, error, isError} = useDataMutation(id)
-    console.log('formerror '+isError)
+    
+    
     return (
         <FormControls>
             <Input
@@ -62,7 +62,7 @@ const AccountForm = ({id}) => {
               { 
                   id ?
                   <React.Fragment>
-                    <EditButton loading={isUpdating} onClick={() => handleFormSubmit(state, update, inputChangeHandler)}/>
+                    <EditButton loading={isUpdating} onClick={() => handleFormSubmit(state, (args) => update({requestedId: id, ...args}), inputChangeHandler)}/>
                     <DeleteButton loading={isRemoving} onClick={() => remove(id)}/>
                   </React.Fragment>
                   :
