@@ -6,10 +6,11 @@ import {useTableData, useRemoveMutation} from '../page_utils/data_hooks'
 import {FormattedMessage} from 'react-intl'
 import {PageWrapper, TableHeader, PageHeader, ConditionalTable} from '../../components/Table/PageWrapper'
 import {useHeaders} from '../page_utils/table_hooks'
+import { InlineError } from '../../components/Error/ErrorComponent'
 
 const Accounts = () => {
     const {data: accounts, error, isLoading, isError, isSuccess} = useTableData()
-    const {mutate: remove} = useRemoveMutation()
+    const {mutate: remove, error: removeError, isError: isRemovingError} = useRemoveMutation()
     const tableHeaders = useHeaders(remove)
     const columns = useMemo(
       () => [
@@ -27,7 +28,7 @@ const Accounts = () => {
     );
 
     const rowSubComponent = React.useCallback(
-      (id) => <AccountForm id={id}/>,
+      (id) => <AccountForm id={id} remove={remove}/>,
       []
     )
     
@@ -36,6 +37,7 @@ const Accounts = () => {
         <PageHeader id='account.form.header.account'/>
           <AccountForm />
         <TableHeader id='account.table.header.account' />
+        {isRemovingError ? <InlineError error={removeError}/> : null}
         <ConditionalTable 
           columns={columns}
           data={accounts}

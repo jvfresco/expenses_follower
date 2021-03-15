@@ -14,7 +14,6 @@
     "form.email": "Email",
     "form.password": "Password",
     "form.name": "Name",
-    
     "button.cancel": "Cancel",
     "button.accept": "Accept",
     "button.save": "Save",
@@ -48,5 +47,7 @@
     "table.edit": "Edit",
     "table.delete": "Delete",
     "theme.dark": "Dark theme",
-    "theme.light": "Light theme"
+    "theme.light": "Light theme",
+    "error.inline": "There has been an error, please try again",
+    "error.page": "There has been an error, try refreshing the app. If the problem persist contact the administrator."
 }

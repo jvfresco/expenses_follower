@@ -8,11 +8,12 @@ import {FormattedMessage} from 'react-intl'
 import { useRouteMatch } from 'react-router-dom'
 import {useHeaders} from '../page_utils/table_hooks'
 import {PageWrapper, TableHeader, PageHeader, ConditionalTable} from '../../components/Table/PageWrapper'
+import {InlineError} from '../../components/Error/ErrorComponent'
 
 const CategoriesPage = () => {
   
   const { data: categories, isError, isLoading, isSuccess, error } = useTableData()
-  const {mutate: remove} = useRemoveMutation()
+  const {mutate: remove, error: removeError, isError: isRemovingError} = useRemoveMutation()
   const {url} = useRouteMatch()
   const tableHeaders = useHeaders(remove)
   const columns = useMemo(
@@ -27,7 +28,7 @@ const CategoriesPage = () => {
   );
 
   const rowSubComponent = React.useCallback(
-    (id) => <CategoryForm id={id}/>,
+    (id) => <CategoryForm id={id} remove={remove}/>,
     []
   )
   
@@ -67,12 +68,15 @@ const CategoriesPage = () => {
       <PageHeader id={headers.formHeader}/>
         <CategoryForm />
       <TableHeader id={headers.tableHeader} />
+      {isRemovingError ? <InlineError error={removeError}/> : null}
       <ConditionalTable 
         columns={columns}
         data={categories}
         renderRowSubComponent={rowSubComponent}
         isLoading={isLoading}
         isSuccess={isSuccess}
+        isError={isError}
+        error={error}
       />
     </PageWrapper>
   )

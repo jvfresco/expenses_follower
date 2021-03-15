@@ -13,7 +13,7 @@ function defaultMutationOptions(type, queryClient){
     return{
         onSettled: () => queryClient.invalidateQueries(type),
         onError: (err, variables, recover) => 
-          typeof recover === 'function' ? recover() : null
+         typeof recover === 'function' ? recover() : null
     }
 }
 
@@ -90,8 +90,15 @@ const useRemoveMutation = () => {
     )
   }
   
+  const useDataMutation = (id) => {
+    const {mutate: create, isLoading: isCreating, isError: isCreatingError, error: error1} = useCreateMutation()
+    const {mutate: remove, isLoading: isRemoving, isError: isRemovingError, error: error2} = useRemoveMutation()
+    const {mutate: update, isLoading: isUpdating, isError: isUpdatingError, error: error3} = useUpdateMutation(id)
+    const isError = isUpdatingError || isRemovingError || isCreatingError
+    const error = error1 || error2 || error3
 
+    return {create, remove, update, isCreating, isRemoving, isUpdating, isError, error}
+  }
 
-
-export {useTableData, useCreateMutation, useRemoveMutation, useUpdateMutation, useSingleItemData}
+export {useTableData, useCreateMutation, useRemoveMutation, useUpdateMutation, useSingleItemData, useDataMutation}
 

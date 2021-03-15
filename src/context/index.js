@@ -15,6 +15,9 @@ const AppProviders = ({ children }) => {
         useErrorBoundary: true,
         refetchOnWindowFocus: false,
       },
+      mutations: {
+        useErrorBoundary: false
+      }
     },
   });
 

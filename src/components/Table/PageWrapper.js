@@ -3,6 +3,7 @@ import { css, jsx } from '@emotion/react'
 import {FormattedMessage} from 'react-intl'
 import Table from './Table'
 import {InlineError} from '../Error/ErrorComponent'
+import Spinner from '../UI/Spinner/Spinner'
 
 const PageHeader = ({id}) => (
     <h1 css={{marginBottom: '4rem'}}>
@@ -21,7 +22,7 @@ const ConditionalTable = ({isLoading, isSuccess, isError, error, columns, data, 
     return <InlineError error={error} />
   }
   if(isLoading){
-    return <div>'Loading data...'</div>
+    return <div><Spinner/></div>
   }
   if(isSuccess){
     return <Table columns={columns} data={data} renderRowSubComponent={renderRowSubComponent}/>

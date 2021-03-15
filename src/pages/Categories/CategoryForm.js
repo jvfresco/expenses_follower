@@ -6,10 +6,11 @@ import {FormControls, SaveButton, EditButton, DeleteButton} from '../../componen
 import {required, length} from '../../utils/validators'
 import {FormattedMessage, useIntl} from 'react-intl'
 import {useForm} from '../page_utils/form_utils'
-import { useCreateMutation, useUpdateMutation, useRemoveMutation, useSingleItemData } from '../page_utils/data_hooks'
+import { useDataMutation, useSingleItemData } from '../page_utils/data_hooks'
+import {InlineError} from '../../components/Error/ErrorComponent'
 
 
-const CategoryForm = ({id}) => {
+const CategoryForm = ({id, remove}) => {
     const intl = useIntl()
     const {name} = useSingleItemData(id) || {}
     const {state, inputChangeHandler, handleFormSubmit } = useForm({
@@ -21,9 +22,7 @@ const CategoryForm = ({id}) => {
             }
     })
 
-    const {mutate: create, isLoading: isCreating} = useCreateMutation()
-    const {mutate: update, isLoading: isUpdating} = useUpdateMutation(id)
-    const {mutate: remove, isLoading: isRemoving} = useRemoveMutation()
+    const {create, update, isCreating, isUpdating, isError, error} = useDataMutation(id)
 
     return (
       <FormControls>
@@ -39,7 +38,7 @@ const CategoryForm = ({id}) => {
           placeholder={intl.formatMessage({ id: "category.category" })}
           validationMessage={<FormattedMessage id="validation.length3" />}
         />
-
+        {isError ? <InlineError error={error} /> : null}
         {id ? (
           <React.Fragment>
             <EditButton
@@ -54,7 +53,6 @@ const CategoryForm = ({id}) => {
             />
        
             <DeleteButton
-              loading={isRemoving}
               onClick={() => remove(id)}
             />
             

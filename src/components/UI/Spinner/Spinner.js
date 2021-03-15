@@ -40,9 +40,9 @@ const StyledSpinner = styled.div({
   },
 })
 
-export default function Spinner() {
+export default function Spinner({...props}) {
   return (
-    <StyledSpinner>
+    <StyledSpinner {...props}>
       <div></div>
       <div></div>
       <div></div>

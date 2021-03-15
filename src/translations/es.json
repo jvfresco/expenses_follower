@@ -33,6 +33,8 @@
     "account.position": "Balance de la cuenta",
     "account.table.header.name": "Nombre",
     "account.table.header.balance": "Balance",
+    "account.form.header.account": "Añadir nueva cuenta",
+    "account.table.header.account": "Lista de cuentas disponibles",
     "category.category": "Nombre",
     "category.form.header.expense": "Añadir nueva categoría de gasto",
     "category.table.header.expense": "Categorias de gasto disponibles",
@@ -45,5 +47,7 @@
     "table.edit": "Editar",
     "table.delete": "Eliminar",
     "theme.dark": "Tema oscuro",
-    "theme.light": "Tema claro"
+    "theme.light": "Tema claro",
+    "error.inline": "Ha habido un error. Inténtelo de nuevo por favor",
+    "error.page": "Ha habido un error general, intente actualizar la página. Si el problema persiste, contacte el administrador."
 }
