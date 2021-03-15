@@ -15,6 +15,9 @@ const AppProviders = ({ children }) => {
         useErrorBoundary: true,
         refetchOnWindowFocus: false,
       },
+      mutations: {
+        useErrorBoundary: false
+      }
     },
   });
 
@@ -37,7 +40,7 @@ const AppProviders = ({ children }) => {
           <AuthProvider>
             <IntlProvider locale="en" messages={message}>
               {children}
-              {/* <ReactQueryDevtools initialIsOpen /> */}
+              <ReactQueryDevtools initialIsOpen />
             </IntlProvider>
           </AuthProvider>
         </BrowserRouter>

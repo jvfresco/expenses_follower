@@ -16,10 +16,7 @@ const TableHeader = ({id}) => (
     </h1>
 )
 
-const ConditionalTable = ({isLoading, isSuccess, isError, error, columns, data, renderRowSubComponent, }) => {
-  if(isError){
-    return <InlineError error={error} />
-  }
+const ConditionalTable = ({isLoading, isSuccess, columns, data, renderRowSubComponent, }) => {
   if(isLoading){
     return <div>'Loading data...'</div>
   }

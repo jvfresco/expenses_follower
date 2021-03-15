@@ -1,5 +1,3 @@
-/* @jsxImportSource @emotion/react */
-import { css, jsx } from '@emotion/react'
 import AccountForm from './AccountForm'
 import React, {useMemo} from 'react'
 import {useTableData, useRemoveMutation} from '../page_utils/data_hooks'
@@ -8,7 +6,7 @@ import {PageWrapper, TableHeader, PageHeader, ConditionalTable} from '../../comp
 import {useHeaders} from '../page_utils/table_hooks'
 
 const Accounts = () => {
-    const {data: accounts, error, isLoading, isError, isSuccess} = useTableData()
+    const {data: accounts, isLoading, isSuccess} = useTableData()
     const {mutate: remove} = useRemoveMutation()
     const tableHeaders = useHeaders(remove)
     const columns = useMemo(
@@ -42,8 +40,6 @@ const Accounts = () => {
           renderRowSubComponent={rowSubComponent}
           isLoading={isLoading}
           isSuccess={isSuccess}
-          isError={isError}
-          error={error}
         />
       </PageWrapper>
     )
